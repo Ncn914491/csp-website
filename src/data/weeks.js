@@ -1,8 +1,14 @@
 const weeks = [
   {
     id: 'week1',
-    title: 'Week 1 - Community Introduction',
-    description: `In Week 1, we engaged with residents and leaders to understand local needs. We conducted surveys and informal discussions, identifying needs like educational support, computer literacy, and healthcare awareness. This week established rapport and set the foundation for targeted initiatives.`,
+    title: 'Week 1 - Government High School, Ramanthapur',
+    description: `During our first week, we visited Government High School in Ramanthapur. Our focus was on:
+    - Career guidance for 9th and 10th-grade students
+    - Discussion about various career paths after 10th grade
+    - Introduction to different streams: Science, Commerce, Arts
+    - Information about technical and vocational courses
+    - Emphasis on the importance of higher education
+    The students showed great interest in understanding their future options, and we engaged in interactive Q&A sessions.`,
     images: [
       '/csp/week1/20250711_33220PMByGPSMapCamera.jpg',
       '/csp/week1/20250711_40227PMByGPSMapCamera.jpg',
@@ -14,8 +20,14 @@ const weeks = [
   },
   {
     id: 'week2',
-    title: 'Week 2 - Educational Initiative',
-    description: `Week 2 focused on education: after-school tutoring in math/science, basic computer literacy workshops for adults, and activity-based learning for children. Attendance and engagement were strong, and parents appreciated personalized support for students.`,
+    title: 'Week 2 - ZPHS School, Nacharam',
+    description: `At ZPHS School in Nacharam, we conducted:
+    - Detailed presentation on engineering branches and opportunities
+    - Discussion about entrance exams (JEE, EAMCET)
+    - Information about polytechnic courses
+    - Career opportunities in IT sector
+    - Importance of English language skills
+    Students were particularly interested in understanding engineering paths and entrance exam preparations. Many questions were about IT careers and job prospects.`,
     images: [
       '/csp/week2/IMG-20250712-WA0009.jpg',
       '/csp/week2/IMG-20250712-WA0010.jpg',
@@ -26,8 +38,14 @@ const weeks = [
   },
   {
     id: 'week3',
-    title: 'Week 3 - Health Awareness Campaign',
-    description: `We conducted a health awareness campaign covering hygiene practices, nutrition, and preventive care. Volunteers facilitated interactive sessions and distributed informational material to encourage healthy habits.`,
+    title: 'Week 3 - Government High School, Mallapur',
+    description: `Our visit to Government High School, Mallapur focused on:
+    - Comprehensive overview of medical and paramedical courses
+    - Information about NEET preparation and medical admissions
+    - Discussion about healthcare-related careers
+    - Alternative career paths in biology stream
+    - Scholarship opportunities and government programs
+    The session helped students understand the diverse opportunities in healthcare beyond just MBBS.`,
     images: [
       '/csp/week3/IMG-20250717-WA0015.jpg',
       '/csp/week3/IMG-20250717-WA0016.jpg',
@@ -48,8 +66,14 @@ const weeks = [
   },
   {
     id: 'week4',
-    title: 'Week 4 - Environmental Awareness',
-    description: `We organized an environmental drive focusing on cleanliness and waste segregation awareness. Participants undertook a clean-up and learned simple practices for maintaining hygiene in shared spaces.`,
+    title: 'Week 4 - Government High School, Moula Ali',
+    description: `At Government High School, Moula Ali, we covered:
+    - Commerce stream opportunities and career paths
+    - Information about CA, CS, and business courses
+    - Overview of B.Com, BBA, and related degrees
+    - Employment opportunities in banking and finance
+    - Discussion about entrepreneurship
+    Students gained insights into the business world and professional courses in commerce.`,
     images: [
       '/csp/week4/IMG-20250719-WA0004.jpg',
       '/csp/week4/IMG-20250719-WA0005.jpg',
@@ -62,8 +86,14 @@ const weeks = [
   },
   {
     id: 'week5',
-    title: 'Week 5 - Community Workshops',
-    description: `We iterated on earlier activities, mixing educational support and health awareness. Sessions focused on exam tips, digital basics, and personal hygiene. Feedback highlighted improved confidence among students.`,
+    title: 'Week 5 - ZPHS School, Kapra',
+    description: `Our session at ZPHS School, Kapra emphasized:
+    - Arts and Humanities career opportunities
+    - Information about design, media, and creative fields
+    - Overview of law, journalism, and mass communication
+    - Government job opportunities through UPSC/State services
+    - Discussion about language and literature careers
+    Students learned about diverse career options beyond traditional streams.`,
     images: [
       '/csp/week5/IMG-20250731-WA0015.jpg',
       '/csp/week5/IMG-20250731-WA0016.jpg',
@@ -80,8 +110,14 @@ const weeks = [
   },
   {
     id: 'week6',
-    title: 'Week 6 - Consolidation & Wrap-up',
-    description: `Final activities included consolidating learnings, collecting feedback, and preparing reports. We showcased outcomes from education and health tracks and planned sustainability with local volunteers.`,
+    title: 'Week 6 - Career Guidance Workshop',
+    description: `For our final week, we organized a comprehensive workshop covering:
+    - Recap of all career paths discussed in previous weeks
+    - Study techniques and exam preparation strategies
+    - Time management and goal setting
+    - Motivational session with success stories
+    - Distribution of career guidance materials
+    This session helped consolidate the information shared throughout the program and provided students with practical next steps for their career planning.`,
     images: [
       '/csp/week6/IMG-20250801-WA0013.jpg',
       '/csp/week6/IMG-20250801-WA0014.jpg',
