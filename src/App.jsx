@@ -3,7 +3,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import WeekPage from './pages/WeekPage';
+import CareerGuidance from './pages/CareerGuidance';
 import ScrollToTop from './components/ScrollToTop';
+import Chatbot from './components/Chatbot';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -64,9 +66,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/week/:weekId" element={<WeekPage />} />
+            <Route path="/career-guidance" element={<CareerGuidance />} />
           </Routes>
         </div>
       </main>
+
+      {/* Chatbot */}
+      <Chatbot />
 
       {/* Overlay for mobile when sidebar is open */}
       {isSidebarOpen && (

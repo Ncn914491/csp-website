@@ -27,12 +27,12 @@ function Home() {
                 View Latest Week
               </Link>
             )}
-            <a
-              href="#career-guidance"
+            <Link
+              to="/career-guidance"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-700 bg-opacity-60 hover:bg-opacity-70 transition-colors duration-200"
             >
-              Career Resources
-            </a>
+              Career Guidance
+            </Link>
           </div>
         </div>
       </div>
@@ -134,46 +134,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Career Guidance Section */}
-      <section id="career-guidance" className="bg-white rounded-xl shadow-md overflow-hidden mb-12">
-        <div className="px-8 py-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Career Guidance Resources</h2>
-          <p className="mt-1 text-gray-600">Explore career paths after 10th standard in India.</p>
-        </div>
-        <div className="p-6">
-          {/* Simple flow-chart style using boxes */}
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="font-semibold text-blue-800">Science (PCM/PCB)</h3>
-              <ul className="mt-2 text-sm text-blue-900 list-disc list-inside">
-                <li>Engineering, Architecture</li>
-                <li>Medicine, Pharmacy</li>
-                <li>Pure Sciences, Research</li>
-                <li>Defense, Aviation</li>
-              </ul>
-            </div>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-semibold text-green-800">Commerce</h3>
-              <ul className="mt-2 text-sm text-green-900 list-disc list-inside">
-                <li>CA, CMA, CS</li>
-                <li>B.Com, BBA, MBA</li>
-                <li>Banking, Finance, Marketing</li>
-                <li>Entrepreneurship</li>
-              </ul>
-            </div>
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <h3 className="font-semibold text-purple-800">Arts/Humanities</h3>
-              <ul className="mt-2 text-sm text-purple-900 list-disc list-inside">
-                <li>Law, Civil Services</li>
-                <li>Psychology, Sociology, Economics</li>
-                <li>Media, Design, Languages</li>
-                <li>Hotel Mgmt, Travel & Tourism</li>
-              </ul>
-            </div>
-          </div>
-          <p className="mt-4 text-sm text-gray-500">PDF removed due to issues. We’ve provided a quick overview instead.</p>
-        </div>
-      </section>
 
       {/* About Section */}
       <section className="bg-gray-50 rounded-xl p-8 text-center">
