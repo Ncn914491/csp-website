@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './Chatbot.css';
+import { FaRobot, FaTimes, FaW              placeholder="Type your message..."
+            />
+            <button onClick={handleSendMessage} className="send-button">
+              <IoSend />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );imize, FaWindowMinimize, FaWindowRestore } from 'react-icons/fa';
+import { IoSend } from 'react-icons/io5';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const API_KEY = 'AIzaSyAQEL9an0blwM5X3pt963hNpifWlOt7X0I';
+  const API_KEY = import.meta.env.GEMINI_API_KEY;
   const systemPrompt = `You are a career guidance chatbot. Your purpose is to provide helpful and accurate information about careers, education paths, and skills development. Do not answer questions that are not related to career guidance. If a user asks a question that is not related to career guidance, politely decline to answer and remind them of your purpose.`;
 
   const toggleChatbot = () => {
@@ -73,15 +84,19 @@ const Chatbot = () => {
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : ''} ${isMaximized ? 'maximized' : ''}`}>
       <div className="chatbot-icon" onClick={toggleChatbot}>
-        <img src="/chatbot-icon.svg" alt="Chatbot" />
+        <FaRobot size={30} color="#fff" />
       </div>
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <h3>Career Guidance Chatbot</h3>
+            <h3><FaRobot className="header-icon" /> Career Guidance Chatbot</h3>
             <div className="chatbot-header-buttons">
-              <button onClick={toggleMaximize}>{isMaximized ? 'Minimize' : 'Maximize'}</button>
-              <button onClick={toggleChatbot}>Close</button>
+              <button onClick={toggleMaximize}>
+                {isMaximized ? <FaWindowRestore /> : <FaWindowMaximize />}
+              </button>
+              <button onClick={toggleChatbot}>
+                <FaTimes />
+              </button>
             </div>
           </div>
           <div className="chatbot-messages">
@@ -96,6 +111,7 @@ const Chatbot = () => {
               type="text"
               value={input}
               onChange={handleInputChange}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Ask a question about careers..."
             />
