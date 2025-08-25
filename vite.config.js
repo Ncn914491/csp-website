@@ -5,9 +5,10 @@ import { resolve } from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  define: {
-    'import.meta.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY),
-  },
+  // Note: Do not expose sensitive API keys to the frontend
+  // define: {
+  //   'import.meta.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY),
+  // },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),

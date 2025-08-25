@@ -1,6 +1,15 @@
-const axios = require('axios');
-const mongoose = require('mongoose');
-require('dotenv').config({ path: './backend/.env' });
+import axios from 'axios';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config({ path: join(__dirname, '../backend/.env') });
 
 // Import models for data verification
 const User = require('../backend/models/User');
@@ -399,7 +408,7 @@ function expect(actual) {
 }
 
 // Run the tests
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   console.log('🚀 Starting Integration Tests...\n');
   
   // Simple test runner

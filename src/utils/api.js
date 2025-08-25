@@ -47,37 +47,37 @@ const apiCall = async (endpoint, options = {}) => {
 // API functions
 export const api = {
   // School Visits
-  getVisits: () => apiCall('/api/visits'),
-  getVisit: (id) => apiCall(`/api/visits/${id}`),
-  createVisit: (data) => apiCall('/api/visits', {
+  getVisits: () => apiCall('/visits'),
+  getVisit: (id) => apiCall(`/visits/${id}`),
+  createVisit: (data) => apiCall('/visits', {
     method: 'POST',
     body: JSON.stringify(data),
     auth: true
   }),
-  updateVisit: (id, data) => apiCall(`/api/visits/${id}`, {
+  updateVisit: (id, data) => apiCall(`/visits/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
     auth: true
   }),
-  deleteVisit: (id) => apiCall(`/api/visits/${id}`, {
+  deleteVisit: (id) => apiCall(`/visits/${id}`, {
     method: 'DELETE',
     auth: true
   }),
 
   // Weekly Updates
-  getWeeks: () => apiCall('/api/weeks'),
-  getWeek: (id) => apiCall(`/api/weeks/${id}`),
-  createWeek: (data) => apiCall('/api/weeks', {
+  getWeeks: () => apiCall('/weeks'),
+  getWeek: (id) => apiCall(`/weeks/${id}`),
+  createWeek: (data) => apiCall('/weeks', {
     method: 'POST',
     body: JSON.stringify(data),
     auth: true
   }),
-  updateWeek: (id, data) => apiCall(`/api/weeks/${id}`, {
+  updateWeek: (id, data) => apiCall(`/weeks/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
     auth: true
   }),
-  deleteWeek: (id) => apiCall(`/api/weeks/${id}`, {
+  deleteWeek: (id) => apiCall(`/weeks/${id}`, {
     method: 'DELETE',
     auth: true
   }),
@@ -85,37 +85,37 @@ export const api = {
   // Resources
   getResources: (filters = {}) => {
     const params = new URLSearchParams(filters);
-    return apiCall(`/api/resources?${params}`);
+    return apiCall(`/resources?${params}`);
   },
-  getResource: (id) => apiCall(`/api/resources/${id}`),
-  createResource: (data) => apiCall('/api/resources', {
+  getResource: (id) => apiCall(`/resources/${id}`),
+  createResource: (data) => apiCall('/resources', {
     method: 'POST',
     body: JSON.stringify(data),
     auth: true
   }),
-  updateResource: (id, data) => apiCall(`/api/resources/${id}`, {
+  updateResource: (id, data) => apiCall(`/resources/${id}`, {
     method: 'PUT',
     body: JSON.stringify(data),
     auth: true
   }),
-  deleteResource: (id) => apiCall(`/api/resources/${id}`, {
+  deleteResource: (id) => apiCall(`/resources/${id}`, {
     method: 'DELETE',
     auth: true
   }),
 
   // Users/Auth
-  register: (data) => apiCall('/api/register', {
+  register: (data) => apiCall('/register', {
     method: 'POST',
     body: JSON.stringify(data)
   }),
-  login: (data) => apiCall('/api/login', {
+  login: (data) => apiCall('/login', {
     method: 'POST',
     body: JSON.stringify(data)
   }),
-  getCurrentUser: () => apiCall('/api/protected', { auth: true }),
+  getCurrentUser: () => apiCall('/protected', { auth: true }),
 
   // AI Assistant
-  sendMessage: (message) => apiCall('/api/ai', {
+  sendMessage: (message) => apiCall('/ai', {
     method: 'POST',
     body: JSON.stringify({ message })
   })

@@ -323,7 +323,7 @@ function Main() {
         </div>
       )}
 
-      {/* Add custom animations */}
+      {/* Add custom animations and glassmorphism effects */}
       <style jsx>{`
         @keyframes fade-in-up {
           from {
@@ -336,6 +336,41 @@ function Main() {
           }
         }
         
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        
+        @keyframes liquid-float {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-10px) rotate(2deg);
+          }
+        }
+        
+        @keyframes glass-shimmer {
+          0% {
+            background-position: -200px 0;
+          }
+          100% {
+            background-position: calc(200px + 100%) 0;
+          }
+        }
+        
+        @keyframes gradient-shift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
         .animate-fade-in-up {
           animation: fade-in-up 0.8s ease-out;
         }
@@ -344,9 +379,59 @@ function Main() {
           animation: fade-in 0.3s ease-out;
         }
         
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        .animate-liquid-float {
+          animation: liquid-float 6s ease-in-out infinite;
+        }
+        
+        .glass-card {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .glass-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
+          transition: left 0.5s;
+        }
+        
+        .glass-card:hover::before {
+          left: 100%;
+        }
+        
+        .gradient-bg {
+          background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+          background-size: 400% 400%;
+          animation: gradient-shift 15s ease infinite;
+        }
+        
+        .glass-morphism {
+          backdrop-filter: blur(16px) saturate(180%);
+          -webkit-backdrop-filter: blur(16px) saturate(180%);
+          background-color: rgba(255, 255, 255, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.125);
+          box-shadow: 
+            0 8px 32px 0 rgba(31, 38, 135, 0.37),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .glass-morphism-dark {
+          backdrop-filter: blur(16px) saturate(180%);
+          -webkit-backdrop-filter: blur(16px) saturate(180%);
+          background-color: rgba(17, 25, 40, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.125);
+          box-shadow: 
+            0 8px 32px 0 rgba(31, 38, 135, 0.37),
+            inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
         }
       `}</style>
     </div>

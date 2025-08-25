@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { API_URL } from '../config';
 
 function AskAI() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +36,7 @@ function AskAI() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/ai', {
+      const response = await fetch(`${API_URL}/ai`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,12 +87,17 @@ function AskAI() {
           aria-label="Open AskAI Chat"
         >
           <div className="relative">
-            {/* AI Icon */}
+            {/* AskAI Icon - Brain with sparkles */}
             <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-              <circle cx="9" cy="10" r="1.5"/>
-              <circle cx="15" cy="10" r="1.5"/>
-              <path d="M12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.62 3.34 1.66 4.59-.05.27-.16.52-.16.81 0 1.1.9 2 2 2h.28c.35.6.98 1 1.72 1 .74 0 1.37-.4 1.72-1h.56c.35.6.98 1 1.72 1 .74 0 1.37-.4 1.72-1H16c1.1 0 2-.9 2-2 0-.29-.11-.54-.16-.81C18.38 12.34 19 10.74 19 9c0-3.87-3.13-7-7-7z"/>
+              <circle cx="9" cy="8" r="1"/>
+              <circle cx="15" cy="8" r="1"/>
+              <path d="M12 12c-1.1 0-2-.9-2-2h4c0 1.1-.9 2-2 2z"/>
+              {/* Sparkles */}
+              <circle cx="7" cy="4" r="0.5" opacity="0.7"/>
+              <circle cx="17" cy="6" r="0.5" opacity="0.7"/>
+              <circle cx="20" cy="14" r="0.5" opacity="0.7"/>
+              <circle cx="4" cy="16" r="0.5" opacity="0.7"/>
             </svg>
             {/* Pulse Animation */}
             <span className="absolute -top-1 -right-1 h-3 w-3">
@@ -118,10 +124,10 @@ function AskAI() {
               <div className="flex items-center space-x-3">
                 <div className="bg-white/20 rounded-full p-2">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                    <circle cx="9" cy="10" r="1.5"/>
-                    <circle cx="15" cy="10" r="1.5"/>
-                    <path d="M12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 1.74.62 3.34 1.66 4.59-.05.27-.16.52-.16.81 0 1.1.9 2 2 2h.28c.35.6.98 1 1.72 1 .74 0 1.37-.4 1.72-1h.56c.35.6.98 1 1.72 1 .74 0 1.37-.4 1.72-1H16c1.1 0 2-.9 2-2 0-.29-.11-.54-.16-.81C18.38 12.34 19 10.74 19 9c0-3.87-3.13-7-7-7z"/>
+                    <circle cx="9" cy="8" r="0.8"/>
+                    <circle cx="15" cy="8" r="0.8"/>
+                    <path d="M12 11c-0.8 0-1.5-.7-1.5-1.5h3c0 .8-.7 1.5-1.5 1.5z"/>
                   </svg>
                 </div>
                 <div>
