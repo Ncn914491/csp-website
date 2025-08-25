@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../utils/api';
 import weeksData from '../data/weeks';
 
 function Home() {
-  // Determine the latest week by numeric ordering
+  const [visits, setVisits] = useState([]);
+  const [weeklyUpdates, setWeeklyUpdates] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [visitsData, weeksData] = await Promise.all([
+        api.getVisits(),
+        api.getWeeks()
+      ]);
+      setVisits(visitsData.slice(0, 3)); // Show latest 3 visits
+      setWeeklyUpdates(weeksData.slice(0, 3)); // Show latest 3 weeks
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Determine the latest week by numeric ordering (fallback to static data)
   const toNumber = (id) => Number(String(id).replace('week', ''));
   const latestWeek = [...weeksData].sort((a, b) => toNumber(b.id) - toNumber(a.id))[0];
 
@@ -82,7 +106,85 @@ function Home() {
         </section>
       )}
 
-      {/* All Weeks Grid */}
+      {/* School Visits Section */}
+      {!loading && visits.length > 0 && (
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Recent School Visits</h2>
+            <Link to="/school-visits" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              View all visits →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visits.map((visit) => (
+              <div key={visit._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div className="h-48 bg-gray-100 overflow-hidden">
+                  {visit.images && visit.images.length > 0 ? (
+                    <img
+                      src={visit.images[0]}
+                      alt={visit.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e5e7eb"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400">
+                      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-900">{visit.title}</h3>
+                  <p className="text-sm text-gray-500 mb-2">
+                    {new Date(visit.date).toLocaleDateString()}
+                  </p>
+                  <p className="text-sm text-gray-600 line-clamp-2">{visit.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Weekly Updates from API */}
+      {!loading && weeklyUpdates.length > 0 && (
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Weekly Updates</h2>
+            <Link to="/weekly-updates" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              View all updates →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {weeklyUpdates.map((week) => (
+              <div key={week._id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Week {week.weekNumber}</h3>
+                  <span className="text-sm text-gray-500">
+                    {new Date(week.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-1">Activities</h4>
+                    <p className="text-sm text-gray-600 line-clamp-2">{week.activities}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-1">Highlights</h4>
+                    <p className="text-sm text-gray-600 line-clamp-2">{week.highlights}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* All Weeks Grid (Static Data) */}
       <section className="mb-16">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Weekly Reports</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

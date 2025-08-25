@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { api } from '../utils/api';
 
 const CareerGuidance = () => {
+  const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState('all');
+
+  useEffect(() => {
+    loadResources();
+  }, []);
+
+  const loadResources = async () => {
+    try {
+      const data = await api.getResources();
+      setResources(data);
+    } catch (error) {
+      console.error('Error loading resources:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredResources = selectedType === 'all' 
+    ? resources 
+    : resources.filter(resource => resource.type === selectedType);
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <h1 className="text-3xl font-bold text-center mb-8 text-blue-800">Comprehensive Career Guidance: Career Paths in India</h1>
@@ -184,6 +207,89 @@ const CareerGuidance = () => {
           </div>
         </div>
       </section>
+
+      {/* Career Resources Section */}
+      {!loading && resources.length > 0 && (
+        <section className="mb-12 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4 text-blue-700 border-b pb-2">Career Resources</h2>
+          
+          {/* Filter Buttons */}
+          <div className="mb-6 flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedType('all')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                selectedType === 'all'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              All Resources
+            </button>
+            {['PDF', 'Video', 'Article'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setSelectedType(type)}
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  selectedType === type
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {type}s
+              </button>
+            ))}
+          </div>
+
+          {/* Resources Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredResources.map((resource) => (
+              <div key={resource._id} className="bg-gray-50 p-4 rounded-lg border hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-semibold text-gray-900 line-clamp-2">{resource.title}</h3>
+                  <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                    resource.type === 'PDF' ? 'bg-red-100 text-red-800' :
+                    resource.type === 'Video' ? 'bg-green-100 text-green-800' :
+                    'bg-blue-100 text-blue-800'
+                  }`}>
+                    {resource.type}
+                  </span>
+                </div>
+                
+                {resource.tags.length > 0 && (
+                  <div className="mb-3">
+                    {resource.tags.map((tag, index) => (
+                      <span 
+                        key={index}
+                        className="inline-block bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded mr-1 mb-1"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                
+                <a
+                  href={resource.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
+                >
+                  View Resource
+                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {filteredResources.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              No resources found for the selected type.
+            </div>
+          )}
+        </section>
+      )}
       
       <div className="mt-8 bg-blue-50 p-4 rounded-lg text-center">
         <p className="text-blue-800 font-medium">

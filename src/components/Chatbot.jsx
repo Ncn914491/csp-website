@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Chatbot.css';
-import { FaRobot, FaTimes, FaW              placeholder="Type your message..."
-            />
-            <button onClick={handleSendMessage} className="send-button">
-              <IoSend />
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );imize, FaWindowMinimize, FaWindowRestore } from 'react-icons/fa';
-import { IoSend } from 'react-icons/io5';
+import { api } from '../utils/api';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { text: "Hello! I'm your career guidance assistant. How can I help you today?", sender: 'bot' }
+  ]);
   const [input, setInput] = useState('');
-  const API_KEY = import.meta.env.GEMINI_API_KEY;
-  const systemPrompt = `You are a career guidance chatbot. Your purpose is to provide helpful and accurate information about careers, education paths, and skills development. Do not answer questions that are not related to career guidance. If a user asks a question that is not related to career guidance, politely decline to answer and remind them of your purpose.`;
+  const [loading, setLoading] = useState(false);
 
   const toggleChatbot = () => {
     setIsOpen(!isOpen);
@@ -33,49 +24,28 @@ const Chatbot = () => {
   };
 
   const handleSendMessage = async () => {
-    if (input.trim() === '') return;
+    if (input.trim() === '' || loading) return;
 
     const userMessage = { text: input, sender: 'user' };
-    setMessages([...messages, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
+    setLoading(true);
 
     try {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  { text: systemPrompt },
-                  { text: input },
-                ],
-              },
-            ],
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch response from the Gemini API');
-      }
-
-      const data = await response.json();
+      const response = await api.sendMessage(input);
       const botMessage = {
-        text: data.candidates[0].content.parts[0].text,
+        text: response.response,
         sender: 'bot',
       };
-      setMessages([...messages, userMessage, botMessage]);
+      setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage = {
         text: 'Sorry, something went wrong. Please try again later.',
         sender: 'bot',
       };
-      setMessages([...messages, userMessage, errorMessage]);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setLoading(false);
     }
 
     setInput('');
@@ -84,18 +54,21 @@ const Chatbot = () => {
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : ''} ${isMaximized ? 'maximized' : ''}`}>
       <div className="chatbot-icon" onClick={toggleChatbot}>
-        <FaRobot size={30} color="#fff" />
+        <img src="/chatbot-icon.svg" alt="Chat" width="30" height="30" />
       </div>
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <h3><FaRobot className="header-icon" /> Career Guidance Chatbot</h3>
+            <h3>
+              <img src="/chatbot-icon.svg" alt="Bot" width="20" height="20" className="header-icon" />
+              Career Guidance Assistant
+            </h3>
             <div className="chatbot-header-buttons">
-              <button onClick={toggleMaximize}>
-                {isMaximized ? <FaWindowRestore /> : <FaWindowMaximize />}
+              <button onClick={toggleMaximize} title={isMaximized ? 'Restore' : 'Maximize'}>
+                {isMaximized ? '🗗' : '🗖'}
               </button>
-              <button onClick={toggleChatbot}>
-                <FaTimes />
+              <button onClick={toggleChatbot} title="Close">
+                ✕
               </button>
             </div>
           </div>
@@ -105,6 +78,13 @@ const Chatbot = () => {
                 {message.text}
               </div>
             ))}
+            {loading && (
+              <div className="message bot">
+                <div className="typing-indicator">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+            )}
           </div>
           <div className="chatbot-input">
             <input
@@ -112,10 +92,12 @@ const Chatbot = () => {
               value={input}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Ask a question about careers..."
+              placeholder="Ask about careers..."
+              disabled={loading}
             />
-            <button onClick={handleSendMessage}>Send</button>
+            <button onClick={handleSendMessage} disabled={loading || !input.trim()}>
+              ➤
+            </button>
           </div>
         </div>
       )}
