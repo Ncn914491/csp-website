@@ -75,6 +75,11 @@ function AskAI() {
   const handleQuickQuestion = (question) => {
     setInputMessage(question);
     inputRef.current?.focus();
+    // Auto-submit the question
+    setTimeout(() => {
+      const event = { preventDefault: () => {} };
+      handleSendMessage(event);
+    }, 100);
   };
 
   return (

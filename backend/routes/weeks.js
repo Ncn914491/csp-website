@@ -3,6 +3,45 @@ const router = express.Router();
 const WeeklyUpdate = require('../models/WeeklyUpdate');
 const localData = require('../local-data');
 const { adminAuth } = require('../middleware/auth');
+const path = require('path');
+const fs = require('fs');
+
+// Helper function to get photos and PDF for a week
+const getWeekAssets = (weekNumber) => {
+  const weekFolder = path.join(__dirname, '../../csp', `week${weekNumber}`);
+  const assets = {
+    gallery: [],
+    reportURL: ''
+  };
+
+  try {
+    // Check if week folder exists
+    if (fs.existsSync(weekFolder)) {
+      // Get all image files from the week folder
+      const files = fs.readdirSync(weekFolder);
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+      const pdfExtensions = ['.pdf'];
+
+      files.forEach(file => {
+        const fileExt = path.extname(file).toLowerCase();
+        const filePath = `/csp/week${weekNumber}/${file}`;
+
+        if (imageExtensions.includes(fileExt)) {
+          assets.gallery.push({
+            url: filePath,
+            caption: path.basename(file, fileExt).replace(/[_-]/g, ' ')
+          });
+        } else if (pdfExtensions.includes(fileExt)) {
+          assets.reportURL = filePath;
+        }
+      });
+    }
+  } catch (error) {
+    console.error(`Error reading assets for week ${weekNumber}:`, error.message);
+  }
+
+  return assets;
+};
 
 // GET all weekly updates
 router.get('/', async (req, res) => {
@@ -13,7 +52,20 @@ router.get('/', async (req, res) => {
     } else {
       weeks = localData.getWeeklyUpdates().sort((a, b) => b.weekNumber - a.weekNumber);
     }
-    res.json(weeks);
+    
+    // Enhance each week with file system assets
+    const enhancedWeeks = weeks.map(week => {
+      const weekData = week.toObject ? week.toObject() : week;
+      const assets = getWeekAssets(weekData.weekNumber);
+      
+      return {
+        ...weekData,
+        gallery: weekData.gallery && weekData.gallery.length > 0 ? weekData.gallery : assets.gallery,
+        reportURL: weekData.reportURL || assets.reportURL
+      };
+    });
+    
+    res.json(enhancedWeeks);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -22,11 +74,28 @@ router.get('/', async (req, res) => {
 // GET single weekly update
 router.get('/:id', async (req, res) => {
   try {
-    const week = await WeeklyUpdate.findById(req.params.id);
+    let week;
+    if (req.isMongoConnected) {
+      week = await WeeklyUpdate.findById(req.params.id);
+    } else {
+      week = localData.getWeeklyUpdates().find(w => w._id === req.params.id);
+    }
+    
     if (!week) {
       return res.status(404).json({ message: 'Weekly update not found' });
     }
-    res.json(week);
+    
+    // Enhance with file system assets
+    const weekData = week.toObject ? week.toObject() : week;
+    const assets = getWeekAssets(weekData.weekNumber);
+    
+    const enhancedWeek = {
+      ...weekData,
+      gallery: weekData.gallery && weekData.gallery.length > 0 ? weekData.gallery : assets.gallery,
+      reportURL: weekData.reportURL || assets.reportURL
+    };
+    
+    res.json(enhancedWeek);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

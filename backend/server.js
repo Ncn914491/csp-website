@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const localData = require('./local-data');
 require('dotenv').config();
 
@@ -10,6 +11,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Static file serving
+app.use('/csp', express.static(path.join(__dirname, '../csp')));
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 // Global flag to track database connection
 let isMongoConnected = false;

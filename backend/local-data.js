@@ -59,10 +59,11 @@ const initializeData = async () => {
       activities: 'Conducted career guidance sessions at 3 schools. Reached approximately 250 students across Class 10 and 12. Distributed career guidance booklets and conducted interactive Q&A sessions.',
       highlights: 'High engagement from students, particularly in engineering and medical career discussions. Teachers appreciated the comprehensive approach.',
       summary: 'Successful launch week with positive feedback from students and faculty.',
-      photoGallery: [
+      gallery: [
         { url: '/images/week1-1.jpg', caption: 'Students engaged in career discussion' },
         { url: '/images/week1-2.jpg', caption: 'Interactive Q&A session' }
-      ]
+      ],
+      reportURL: '/documents/week1-report.pdf'
     },
     {
       _id: 'week-2',
@@ -70,11 +71,12 @@ const initializeData = async () => {
       activities: 'Expanded outreach to 4 additional schools. Introduced new modules on entrepreneurship and skill development. Conducted one-on-one counseling sessions for interested students.',
       highlights: 'Introduction of entrepreneurship module was well-received. Several students expressed interest in startup opportunities.',
       summary: 'Expanded reach with new innovative modules showing great promise.',
-      photoGallery: [
+      gallery: [
         { url: '/images/week2-1.jpg', caption: 'Entrepreneurship workshop' },
         { url: '/images/week2-2.jpg', caption: 'One-on-one counseling' },
         { url: '/images/week2-3.jpg', caption: 'Group discussion on career paths' }
-      ]
+      ],
+      reportURL: '/documents/week2-report.pdf'
     },
     {
       _id: 'week-3',
@@ -82,10 +84,29 @@ const initializeData = async () => {
       activities: 'Focus on entrance exam preparation strategies. Conducted mock interview sessions. Distributed study materials and exam preparation guides.',
       highlights: 'Mock interviews helped students build confidence. Study materials were highly appreciated by both students and parents.',
       summary: 'Practical preparation focus yielded excellent student engagement and positive outcomes.',
-      photoGallery: [
+      gallery: [
         { url: '/images/week3-1.jpg', caption: 'Mock interview session' },
         { url: '/images/week3-2.jpg', caption: 'Study material distribution' }
-      ]
+      ],
+      reportURL: '/documents/week3-report.pdf'
+    },
+    {
+      _id: 'week-4',
+      weekNumber: 4,
+      activities: 'Advanced counseling sessions covering specialized career fields. Organized parent-student joint sessions. Conducted skill assessment tests.',
+      highlights: 'Parent involvement increased significantly. Skill assessments helped students identify their strengths and interests.',
+      summary: 'Comprehensive approach with family involvement showing excellent results.',
+      gallery: [],
+      reportURL: ''
+    },
+    {
+      _id: 'week-5',
+      weekNumber: 5,
+      activities: 'Final week of outreach program. Conducted follow-up sessions and distributed comprehensive career guidance packages. Collected feedback from students and teachers.',
+      highlights: 'Overwhelmingly positive feedback. Many students reported clarity in career choices. Teachers requested continuation of program.',
+      summary: 'Successful completion of 5-week program with lasting impact on student career awareness.',
+      gallery: [],
+      reportURL: ''
     }
   ];
 

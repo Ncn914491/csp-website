@@ -15,10 +15,22 @@ const WeeklyUpdateSchema = new mongoose.Schema({
     required: true
   },
   gallery: [{
-    type: String
+    url: {
+      type: String,
+      required: true
+    },
+    caption: {
+      type: String,
+      default: ''
+    }
   }],
-  report: {
-    type: String
+  reportURL: {
+    type: String,
+    default: ''
+  },
+  summary: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

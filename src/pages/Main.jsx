@@ -237,19 +237,19 @@ function Main() {
               <p className="text-gray-600 mb-2 font-medium">{week.summary || week.highlights}</p>
               <p className="text-sm text-gray-500">{week.activities.substring(0, 100)}...</p>
               
-              {week.photoGallery && week.photoGallery.length > 0 && (
+              {week.gallery && week.gallery.length > 0 && (
                 <div className="mt-4 flex gap-2">
-                  {week.photoGallery.slice(0, 3).map((photo, idx) => (
+                  {week.gallery.slice(0, 3).map((photo, idx) => (
                     <img
                       key={idx}
                       src={photo.url}
-                      alt={photo.caption}
-                      className="w-20 h-20 object-cover rounded-lg"
+                      alt={photo.caption || `Week ${week.weekNumber} photo ${idx + 1}`}
+                      className="w-20 h-20 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow"
                     />
                   ))}
-                  {week.photoGallery.length > 3 && (
+                  {week.gallery.length > 3 && (
                     <div className="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 text-sm">
-                      +{week.photoGallery.length - 3}
+                      +{week.gallery.length - 3}
                     </div>
                   )}
                 </div>
@@ -260,6 +260,101 @@ function Main() {
               </button>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Career Resources Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Career Resources
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Career Guidance PDF */}
+          <div className="backdrop-blur-lg bg-white/60 rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-800">Career Guidance Handbook</h3>
+              <span className="text-3xl">📚</span>
+            </div>
+            
+            <p className="text-gray-600 mb-4">
+              Comprehensive guide covering all major career paths, entrance exams, and preparation strategies for students.
+            </p>
+            
+            <div className="flex flex-col space-y-2">
+              <a
+                href="/public/career.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              >
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                </svg>
+                Download PDF
+              </a>
+              <a
+                href="/public/career.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium text-center"
+              >
+                View in Browser →
+              </a>
+            </div>
+          </div>
+          
+          {/* Additional Resources from API */}
+          {resources.slice(0, 4).map((resource) => (
+            <div key={resource._id} className="backdrop-blur-lg bg-white/60 rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-800">{resource.title}</h3>
+                <span className="text-2xl">
+                  {resource.type === 'PDF' ? '📄' : resource.type === 'Video' ? '🎥' : '📄'}
+                </span>
+              </div>
+              
+              <p className="text-gray-600 mb-4 text-sm">
+                {resource.description || 'Additional resource for career guidance and preparation.'}
+              </p>
+              
+              {resource.tags && resource.tags.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-1">
+                  {resource.tags.map((tag, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              
+              <a
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm"
+              >
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V7z" clipRule="evenodd" />
+                </svg>
+                Access Resource
+              </a>
+            </div>
+          ))}
+          
+          {/* Show More Resources Button */}
+          {resources.length > 4 && (
+            <div className="backdrop-blur-lg bg-white/60 rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center">
+              <span className="text-4xl mb-4">📂</span>
+              <h3 className="text-lg font-bold text-gray-800 mb-2">More Resources</h3>
+              <p className="text-gray-600 text-sm text-center mb-4">
+                Explore {resources.length - 4} additional career guidance resources
+              </p>
+              <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-sm">
+                View All Resources
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -296,20 +391,50 @@ function Main() {
                   <p className="text-gray-600">{selectedWeek.highlights}</p>
                 </div>
                 
-                {selectedWeek.photoGallery && selectedWeek.photoGallery.length > 0 && (
+                {/* PDF Report Link */}
+                {selectedWeek.reportURL && (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-700 mb-3">Weekly Report</h3>
+                    <div className="flex items-center space-x-4">
+                      <a
+                        href={selectedWeek.reportURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                        </svg>
+                        Download PDF Report
+                      </a>
+                      <a
+                        href={selectedWeek.reportURL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      >
+                        View in New Tab →
+                      </a>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Photo Gallery */}
+                {selectedWeek.gallery && selectedWeek.gallery.length > 0 && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-4">Photo Gallery</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {selectedWeek.photoGallery.map((photo, idx) => (
-                        <div key={idx} className="group relative">
+                      {selectedWeek.gallery.map((photo, idx) => (
+                        <div key={idx} className="group relative cursor-pointer">
                           <img
                             src={photo.url}
-                            alt={photo.caption}
-                            className="w-full h-48 object-cover rounded-lg shadow-lg"
+                            alt={photo.caption || `Week ${selectedWeek.weekNumber} photo ${idx + 1}`}
+                            className="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                            onClick={() => window.open(photo.url, '_blank')}
                           />
                           {photo.caption && (
-                            <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-2 rounded-b-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                              <p className="text-sm">{photo.caption}</p>
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent text-white p-3 rounded-b-lg">
+                              <p className="text-sm font-medium">{photo.caption}</p>
                             </div>
                           )}
                         </div>
