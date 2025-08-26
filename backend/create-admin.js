@@ -21,7 +21,7 @@ const createAdmin = async () => {
     // Check if admin already exists
     const existingAdmin = await User.findOne({ role: 'admin' });
     if (existingAdmin) {
-      console.log('Admin user already exists:', existingAdmin.username);
+      console.log('Admin user already exists:', existingAdmin.email);
       return;
     }
 
@@ -31,14 +31,15 @@ const createAdmin = async () => {
     const passwordHash = await bcrypt.hash(adminPassword, saltRounds);
 
     const adminUser = new User({
-      username: 'admin',
-      passwordHash,
+      name: 'Admin User',
+      email: 'admin@csp.com',
+      password: passwordHash,
       role: 'admin'
     });
 
     await adminUser.save();
     console.log('✅ Admin user created successfully!');
-    console.log('Username: admin');
+    console.log('Email: admin@csp.com');
     console.log('Password: admin123');
     console.log('⚠️  Please change the password after first login!');
 

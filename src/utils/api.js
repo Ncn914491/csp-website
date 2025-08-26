@@ -118,5 +118,14 @@ export const api = {
   sendMessage: (message) => apiCall('/ai', {
     method: 'POST',
     body: JSON.stringify({ message })
-  })
+  }),
+
+  // Groups
+  listGroups: () => apiCall('/groups', { auth: true }),
+  createGroup: (data) => apiCall('/groups', { method: 'POST', body: JSON.stringify(data), auth: true }),
+  deleteGroup: (groupId) => apiCall(`/groups/${groupId}`, { method: 'DELETE', auth: true }),
+  joinGroup: (groupId) => apiCall(`/groups/${groupId}/join`, { method: 'POST', auth: true }),
+  leaveGroup: (groupId) => apiCall(`/groups/${groupId}/leave`, { method: 'POST', auth: true }),
+  listMessages: (groupId) => apiCall(`/groups/${groupId}/messages`, { auth: true }),
+  sendMessageToGroup: (groupId, content) => apiCall(`/groups/${groupId}/messages`, { method: 'POST', body: JSON.stringify({ content }), auth: true })
 };

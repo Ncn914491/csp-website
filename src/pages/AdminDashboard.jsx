@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import GridFSWeekAdmin from '../components/GridFSWeekAdmin';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -254,54 +255,9 @@ function AdminDashboard() {
               )}
             </div>
 
-            {/* Weekly Updates List */}
+            {/* GridFS Weeks Admin */}
             {activeTab === 'weeks' && (
-              <div className="space-y-4">
-                {weeks.map((week) => (
-                  <div key={week._id} className="bg-white/50 rounded-lg p-4 border border-gray-200">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          Week {week.weekNumber}
-                        </h3>
-                        <p className="text-gray-600 mt-1">{week.summary || week.highlights}</p>
-                        <p className="text-sm text-gray-500 mt-2">{week.activities}</p>
-                        {week.photoGallery && week.photoGallery.length > 0 && (
-                          <div className="mt-3 flex gap-2">
-                            {week.photoGallery.slice(0, 4).map((photo, idx) => (
-                              <img
-                                key={idx}
-                                src={photo.url}
-                                alt={photo.caption}
-                                className="w-16 h-16 object-cover rounded"
-                              />
-                            ))}
-                            {week.photoGallery.length > 4 && (
-                              <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-sm text-gray-600">
-                                +{week.photoGallery.length - 4}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex space-x-2 ml-4">
-                        <button
-                          onClick={() => handleEdit(week)}
-                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(week._id, 'weeks')}
-                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-all"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <GridFSWeekAdmin />
             )}
 
             {/* School Visits List */}

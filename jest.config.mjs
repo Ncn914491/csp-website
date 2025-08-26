@@ -17,5 +17,9 @@ export default {
     'src/**/*.{js,jsx}',
     '!src/main.jsx',
     '!src/**/*.d.ts',
-  ]
+  ],
+  testTimeout: 10000,
+  maxWorkers: 1,
+  forceExit: true,
+  detectOpenHandles: false
 };

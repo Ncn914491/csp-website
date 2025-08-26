@@ -115,8 +115,8 @@ router.post('/login', async (req, res) => {
       role: user.role
     };
 
-    // Sign JWT token (expires in 1 hour)
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Sign JWT token (expires in 24 hours)
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     // Return token and user info
     res.json({

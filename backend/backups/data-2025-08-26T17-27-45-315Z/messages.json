@@ -1,0 +1,695 @@
+[
+  {
+    "_id": "68adecc772ea6fd8cf4c51f1",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc272ea6fd8cf4c51bf",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:07.311Z",
+    "updatedAt": "2025-08-26T17:20:07.311Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51f3",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc372ea6fd8cf4c51c5",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:07.451Z",
+    "updatedAt": "2025-08-26T17:20:07.451Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51f5",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc372ea6fd8cf4c51c5",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:07.513Z",
+    "updatedAt": "2025-08-26T17:20:07.513Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51f7",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:07.573Z",
+    "updatedAt": "2025-08-26T17:20:07.573Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51f9",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:07.632Z",
+    "updatedAt": "2025-08-26T17:20:07.632Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51fb",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:07.795Z",
+    "updatedAt": "2025-08-26T17:20:07.795Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51fd",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:07.932Z",
+    "updatedAt": "2025-08-26T17:20:07.932Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc772ea6fd8cf4c51ff",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc272ea6fd8cf4c51bf",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:07.993Z",
+    "updatedAt": "2025-08-26T17:20:07.993Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5201",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:08.051Z",
+    "updatedAt": "2025-08-26T17:20:08.051Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5203",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:08.192Z",
+    "updatedAt": "2025-08-26T17:20:08.192Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5205",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc372ea6fd8cf4c51c5",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:08.337Z",
+    "updatedAt": "2025-08-26T17:20:08.337Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5207",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc372ea6fd8cf4c51c5",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:08.402Z",
+    "updatedAt": "2025-08-26T17:20:08.402Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5209",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:08.466Z",
+    "updatedAt": "2025-08-26T17:20:08.466Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c520b",
+    "groupId": "68adecc672ea6fd8cf4c51e5",
+    "userId": "68adecc372ea6fd8cf4c51cb",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:08.530Z",
+    "updatedAt": "2025-08-26T17:20:08.530Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c520d",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc672ea6fd8cf4c51dd",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:08.588Z",
+    "updatedAt": "2025-08-26T17:20:08.588Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c520f",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc272ea6fd8cf4c51bf",
+    "content": "What are your thoughts on the latest JavaScript frameworks?",
+    "createdAt": "2025-08-26T17:20:08.650Z",
+    "updatedAt": "2025-08-26T17:20:08.650Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5211",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc372ea6fd8cf4c51c7",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:08.707Z",
+    "updatedAt": "2025-08-26T17:20:08.707Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5213",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc672ea6fd8cf4c51dd",
+    "content": "What are your thoughts on the latest JavaScript frameworks?",
+    "createdAt": "2025-08-26T17:20:08.767Z",
+    "updatedAt": "2025-08-26T17:20:08.767Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5215",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc272ea6fd8cf4c51bf",
+    "content": "Looking for study partners for the upcoming semester. Anyone interested?",
+    "createdAt": "2025-08-26T17:20:08.830Z",
+    "updatedAt": "2025-08-26T17:20:08.830Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc872ea6fd8cf4c5217",
+    "groupId": "68adecc672ea6fd8cf4c51e7",
+    "userId": "68adecc472ea6fd8cf4c51d3",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:08.891Z",
+    "updatedAt": "2025-08-26T17:20:08.891Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c5219",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:09.054Z",
+    "updatedAt": "2025-08-26T17:20:09.054Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c521b",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51db",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:09.220Z",
+    "updatedAt": "2025-08-26T17:20:09.220Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c521d",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51db",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:09.364Z",
+    "updatedAt": "2025-08-26T17:20:09.364Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c521f",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51db",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:09.479Z",
+    "updatedAt": "2025-08-26T17:20:09.479Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c5221",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:09.658Z",
+    "updatedAt": "2025-08-26T17:20:09.658Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c5223",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:09.808Z",
+    "updatedAt": "2025-08-26T17:20:09.808Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc972ea6fd8cf4c5225",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:09.977Z",
+    "updatedAt": "2025-08-26T17:20:09.977Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c5227",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "What are your thoughts on the latest JavaScript frameworks?",
+    "createdAt": "2025-08-26T17:20:10.180Z",
+    "updatedAt": "2025-08-26T17:20:10.180Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c5229",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:10.282Z",
+    "updatedAt": "2025-08-26T17:20:10.282Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c522b",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc472ea6fd8cf4c51d3",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:10.487Z",
+    "updatedAt": "2025-08-26T17:20:10.487Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c522d",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc472ea6fd8cf4c51cf",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:10.588Z",
+    "updatedAt": "2025-08-26T17:20:10.588Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c522f",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:10.795Z",
+    "updatedAt": "2025-08-26T17:20:10.795Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecca72ea6fd8cf4c5231",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:10.982Z",
+    "updatedAt": "2025-08-26T17:20:10.982Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c5233",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:11.106Z",
+    "updatedAt": "2025-08-26T17:20:11.106Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c5235",
+    "groupId": "68adecc772ea6fd8cf4c51e9",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:11.306Z",
+    "updatedAt": "2025-08-26T17:20:11.306Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c5237",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51db",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:11.409Z",
+    "updatedAt": "2025-08-26T17:20:11.409Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c5239",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:11.511Z",
+    "updatedAt": "2025-08-26T17:20:11.511Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c523b",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51d7",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:11.717Z",
+    "updatedAt": "2025-08-26T17:20:11.717Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccb72ea6fd8cf4c523d",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc372ea6fd8cf4c51c3",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:11.920Z",
+    "updatedAt": "2025-08-26T17:20:11.920Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c523f",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc372ea6fd8cf4c51c3",
+    "content": "Looking for study partners for the upcoming semester. Anyone interested?",
+    "createdAt": "2025-08-26T17:20:12.022Z",
+    "updatedAt": "2025-08-26T17:20:12.022Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c5241",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc372ea6fd8cf4c51c3",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:12.125Z",
+    "updatedAt": "2025-08-26T17:20:12.125Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c5243",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51db",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:12.331Z",
+    "updatedAt": "2025-08-26T17:20:12.331Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c5245",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc372ea6fd8cf4c51cb",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:12.432Z",
+    "updatedAt": "2025-08-26T17:20:12.432Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c5247",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:12.637Z",
+    "updatedAt": "2025-08-26T17:20:12.637Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c5249",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "What are your thoughts on the latest JavaScript frameworks?",
+    "createdAt": "2025-08-26T17:20:12.770Z",
+    "updatedAt": "2025-08-26T17:20:12.770Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccc72ea6fd8cf4c524b",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:12.853Z",
+    "updatedAt": "2025-08-26T17:20:12.853Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c524d",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc672ea6fd8cf4c51e1",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:13.047Z",
+    "updatedAt": "2025-08-26T17:20:13.047Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c524f",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51d7",
+    "content": "Looking for study partners for the upcoming semester. Anyone interested?",
+    "createdAt": "2025-08-26T17:20:13.141Z",
+    "updatedAt": "2025-08-26T17:20:13.141Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c5251",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc672ea6fd8cf4c51e1",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:13.252Z",
+    "updatedAt": "2025-08-26T17:20:13.252Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c5253",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc372ea6fd8cf4c51cb",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:13.307Z",
+    "updatedAt": "2025-08-26T17:20:13.307Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c5255",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc272ea6fd8cf4c51bd",
+    "content": "Looking for study partners for the upcoming semester. Anyone interested?",
+    "createdAt": "2025-08-26T17:20:13.456Z",
+    "updatedAt": "2025-08-26T17:20:13.456Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c5257",
+    "groupId": "68adecc772ea6fd8cf4c51eb",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:13.558Z",
+    "updatedAt": "2025-08-26T17:20:13.558Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c5259",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:13.740Z",
+    "updatedAt": "2025-08-26T17:20:13.740Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c525b",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc372ea6fd8cf4c51c3",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:13.866Z",
+    "updatedAt": "2025-08-26T17:20:13.866Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccd72ea6fd8cf4c525d",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:13.929Z",
+    "updatedAt": "2025-08-26T17:20:13.929Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c525f",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:14.071Z",
+    "updatedAt": "2025-08-26T17:20:14.071Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5261",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:14.173Z",
+    "updatedAt": "2025-08-26T17:20:14.173Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5263",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:14.275Z",
+    "updatedAt": "2025-08-26T17:20:14.275Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5265",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "What are your thoughts on the latest JavaScript frameworks?",
+    "createdAt": "2025-08-26T17:20:14.416Z",
+    "updatedAt": "2025-08-26T17:20:14.416Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5267",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc372ea6fd8cf4c51c3",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:14.491Z",
+    "updatedAt": "2025-08-26T17:20:14.491Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5269",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:14.572Z",
+    "updatedAt": "2025-08-26T17:20:14.572Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c526b",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:14.657Z",
+    "updatedAt": "2025-08-26T17:20:14.657Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c526d",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Just got an internship offer! Thanks to everyone for the support and guidance.",
+    "createdAt": "2025-08-26T17:20:14.717Z",
+    "updatedAt": "2025-08-26T17:20:14.717Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c526f",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:14.779Z",
+    "updatedAt": "2025-08-26T17:20:14.779Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5271",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:14.873Z",
+    "updatedAt": "2025-08-26T17:20:14.873Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5273",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Does anyone have experience with cloud platforms like AWS or Azure?",
+    "createdAt": "2025-08-26T17:20:14.929Z",
+    "updatedAt": "2025-08-26T17:20:14.929Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecce72ea6fd8cf4c5275",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc272ea6fd8cf4c51c1",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:14.996Z",
+    "updatedAt": "2025-08-26T17:20:14.996Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5277",
+    "groupId": "68adecc772ea6fd8cf4c51ed",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:15.057Z",
+    "updatedAt": "2025-08-26T17:20:15.057Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5279",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc672ea6fd8cf4c51df",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:15.113Z",
+    "updatedAt": "2025-08-26T17:20:15.113Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c527b",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc372ea6fd8cf4c51cb",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:15.172Z",
+    "updatedAt": "2025-08-26T17:20:15.172Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c527d",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Hello everyone! Excited to be part of this group.",
+    "createdAt": "2025-08-26T17:20:15.242Z",
+    "updatedAt": "2025-08-26T17:20:15.242Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c527f",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc372ea6fd8cf4c51c9",
+    "content": "Planning to attend a tech conference next month. Anyone else going?",
+    "createdAt": "2025-08-26T17:20:15.331Z",
+    "updatedAt": "2025-08-26T17:20:15.331Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5281",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc672ea6fd8cf4c51df",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:15.392Z",
+    "updatedAt": "2025-08-26T17:20:15.392Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5283",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc372ea6fd8cf4c51c9",
+    "content": "Working on a machine learning project. Would love to get some feedback.",
+    "createdAt": "2025-08-26T17:20:15.473Z",
+    "updatedAt": "2025-08-26T17:20:15.473Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5285",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc572ea6fd8cf4c51d9",
+    "content": "Has anyone worked with React.js recently? I need some help with state management.",
+    "createdAt": "2025-08-26T17:20:15.578Z",
+    "updatedAt": "2025-08-26T17:20:15.578Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5287",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc672ea6fd8cf4c51df",
+    "content": "Just completed a project using Python and Django. Happy to share my experience!",
+    "createdAt": "2025-08-26T17:20:15.637Z",
+    "updatedAt": "2025-08-26T17:20:15.637Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adeccf72ea6fd8cf4c5289",
+    "groupId": "68adecc772ea6fd8cf4c51ef",
+    "userId": "68adecc572ea6fd8cf4c51d5",
+    "content": "Found this amazing tutorial on YouTube. Highly recommend checking it out!",
+    "createdAt": "2025-08-26T17:20:15.703Z",
+    "updatedAt": "2025-08-26T17:20:15.703Z",
+    "__v": 0
+  }
+]

@@ -1,0 +1,212 @@
+[
+  {
+    "_id": "68adecc272ea6fd8cf4c51bb",
+    "name": "Admin User",
+    "email": "admin@csp.edu",
+    "password": "$2a$10$S7Sdaut0dwXANzwBlntHF.rktTiaZbHIWyP8D9C5uzT/tjRYv0Lpy",
+    "role": "admin",
+    "createdAt": "2025-08-26T17:20:02.052Z",
+    "updatedAt": "2025-08-26T17:20:02.052Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc272ea6fd8cf4c51bd",
+    "name": "Aarav Sharma",
+    "email": "aarav.sharma@student.csp.edu",
+    "password": "$2a$10$4V4nDuUCVeMM6TGMXOnKjuMcFcAAgA0TDF2A5d0Y2o/UngrdIULpa",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:02.323Z",
+    "updatedAt": "2025-08-26T17:20:02.323Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc272ea6fd8cf4c51bf",
+    "name": "Vivaan Patel",
+    "email": "vivaan.patel@student.csp.edu",
+    "password": "$2a$10$rUX83m1HwuJFLobMrRUM/udxElgd5hfTCT9.MrJydT8wXCNrvFhP.",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:02.563Z",
+    "updatedAt": "2025-08-26T17:20:02.563Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc272ea6fd8cf4c51c1",
+    "name": "Aditya Kumar",
+    "email": "aditya.kumar@student.csp.edu",
+    "password": "$2a$10$Hy6wPoC3P3WIg2b69CUgzuUpkDxYDmZ9wQB0LA.Ba9OxOdLBBqXBm",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:02.796Z",
+    "updatedAt": "2025-08-26T17:20:02.796Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc372ea6fd8cf4c51c3",
+    "name": "Vihaan Singh",
+    "email": "vihaan.singh@student.csp.edu",
+    "password": "$2a$10$u3hgHZr7hR0H3T0N.kpBXe9CLWZADnfDtC9Io4VrNAaduReaK0nnK",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:03.052Z",
+    "updatedAt": "2025-08-26T17:20:03.052Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc372ea6fd8cf4c51c5",
+    "name": "Arjun Gupta",
+    "email": "arjun.gupta@student.csp.edu",
+    "password": "$2a$10$eRvTfoXKjqYbxTZJb9XEg.mbSO0nxXqFLsqaUZMCKEhvXKCkRp1pe",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:03.272Z",
+    "updatedAt": "2025-08-26T17:20:03.272Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc372ea6fd8cf4c51c7",
+    "name": "Sai Reddy",
+    "email": "sai.reddy@student.csp.edu",
+    "password": "$2a$10$DVs0VMfk.4HjosVWIAc3E.9NKyG5MPP6u7OCUbYwq9pB9JFSZqrA6",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:03.518Z",
+    "updatedAt": "2025-08-26T17:20:03.518Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc372ea6fd8cf4c51c9",
+    "name": "Reyansh Agarwal",
+    "email": "reyansh.agarwal@student.csp.edu",
+    "password": "$2a$10$UPshbW/4qHvRkeqMKVe7eubnvlyenqGv1X1pN3wY2gbPptCaDTSM2",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:03.725Z",
+    "updatedAt": "2025-08-26T17:20:03.725Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc372ea6fd8cf4c51cb",
+    "name": "Ayaan Khan",
+    "email": "ayaan.khan@student.csp.edu",
+    "password": "$2a$10$e6r8Ztcvqi/.9V77pAg.Meq24wWljDD37HVjBsZ3L5MX7NSD8keNG",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:03.991Z",
+    "updatedAt": "2025-08-26T17:20:03.991Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc472ea6fd8cf4c51cd",
+    "name": "Krishna Yadav",
+    "email": "krishna.yadav@student.csp.edu",
+    "password": "$2a$10$QnLGKK7S7AJPq164Z2bK2ujcsB9YTX/qnyCkshyegQFEwG45.Z2ru",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:04.235Z",
+    "updatedAt": "2025-08-26T17:20:04.235Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc472ea6fd8cf4c51cf",
+    "name": "Ishaan Joshi",
+    "email": "ishaan.joshi@student.csp.edu",
+    "password": "$2a$10$1yBuaQN/Vaxk7/urFOK.mu1UOBZZkyQiaRM9L4DEh90eD88by5YN2",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:04.476Z",
+    "updatedAt": "2025-08-26T17:20:04.476Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc472ea6fd8cf4c51d1",
+    "name": "Ananya Verma",
+    "email": "ananya.verma@student.csp.edu",
+    "password": "$2a$10$0w80szAaaWae6kNRvu0DhOXWeaWXG2OUXkUb6q2ybhHUm1mB3YpFy",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:04.693Z",
+    "updatedAt": "2025-08-26T17:20:04.693Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc472ea6fd8cf4c51d3",
+    "name": "Diya Mehta",
+    "email": "diya.mehta@student.csp.edu",
+    "password": "$2a$10$ESpDR.UqOsJRxJP260lyeOCIh/Ruip44S7Nitv.tu/MoRMl1yC012",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:04.912Z",
+    "updatedAt": "2025-08-26T17:20:04.912Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc572ea6fd8cf4c51d5",
+    "name": "Aadhya Nair",
+    "email": "aadhya.nair@student.csp.edu",
+    "password": "$2a$10$KEqWCs0zksFr/4KFcD611uSFm0qQTJ1Bzi6VCYjZbMxi6Gg7D8pU6",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:05.125Z",
+    "updatedAt": "2025-08-26T17:20:05.125Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc572ea6fd8cf4c51d7",
+    "name": "Kavya Iyer",
+    "email": "kavya.iyer@student.csp.edu",
+    "password": "$2a$10$mfRexroAuKUJ.SA4JmmUDeAK8yZxH/77Xm5BBggrtafRI/Vc.EOb.",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:05.364Z",
+    "updatedAt": "2025-08-26T17:20:05.364Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc572ea6fd8cf4c51d9",
+    "name": "Arya Desai",
+    "email": "arya.desai@student.csp.edu",
+    "password": "$2a$10$u7CpT82ZGFrF7iNeprpojejhgivCXDETeZvFUtwCDCodWpRvcKEkW",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:05.606Z",
+    "updatedAt": "2025-08-26T17:20:05.606Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc572ea6fd8cf4c51db",
+    "name": "Myra Bansal",
+    "email": "myra.bansal@student.csp.edu",
+    "password": "$2a$10$1g9Y9Qg7ASM.UIONTT0p1OKBhHGL90.9NXpW7fSQlAz1qSpVrde2.",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:05.854Z",
+    "updatedAt": "2025-08-26T17:20:05.854Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc672ea6fd8cf4c51dd",
+    "name": "Anika Malhotra",
+    "email": "anika.malhotra@student.csp.edu",
+    "password": "$2a$10$AqSPsAlr3iDqYN1tbSZ56unAXWAZm/b1jZlxPokxcjy.o2rSH4aCC",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:06.067Z",
+    "updatedAt": "2025-08-26T17:20:06.067Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc672ea6fd8cf4c51df",
+    "name": "Saanvi Kapoor",
+    "email": "saanvi.kapoor@student.csp.edu",
+    "password": "$2a$10$OClrUVUT1cqThEL/hwYQUuj6p2.SsmNLZeE4kzk7oOXMXxG27tAM2",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:06.274Z",
+    "updatedAt": "2025-08-26T17:20:06.274Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc672ea6fd8cf4c51e1",
+    "name": "Navya Sinha",
+    "email": "navya.sinha@student.csp.edu",
+    "password": "$2a$10$DGTm10qimk9kt9Q08mJjzeyu1jrgbHmoM12ijkWwW5vZFiYQ9h1ei",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:06.556Z",
+    "updatedAt": "2025-08-26T17:20:06.556Z",
+    "__v": 0
+  },
+  {
+    "_id": "68adecc672ea6fd8cf4c51e3",
+    "name": "Kiara Jain",
+    "email": "kiara.jain@student.csp.edu",
+    "password": "$2a$10$/O99TJXrNHnBBoM4.pJZMudZeXxdHQEHBHZqTju7m6rgjCcU1jEAm",
+    "role": "student",
+    "createdAt": "2025-08-26T17:20:06.788Z",
+    "updatedAt": "2025-08-26T17:20:06.788Z",
+    "__v": 0
+  }
+]

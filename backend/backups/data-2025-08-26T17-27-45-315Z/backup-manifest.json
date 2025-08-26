@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-08-26T17:27:45.322Z",
+  "collections": {
+    "users": {
+      "count": 21,
+      "file": "users.json"
+    },
+    "groups": {
+      "count": 6,
+      "file": "groups.json"
+    },
+    "messages": {
+      "count": 77,
+      "file": "messages.json"
+    },
+    "weeks": {
+      "count": 5,
+      "file": "weeks.json"
+    }
+  },
+  "gridfsFiles": 21
+}

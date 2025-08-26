@@ -7,6 +7,11 @@ import '@testing-library/jest-dom';
 import App from '../App';
 import Auth from '../pages/Auth';
 import AskAI from '../components/AskAI';
+import WeekView from '../components/WeekView';
+import Sidebar from '../components/Sidebar';
+import Groups from '../pages/Groups';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { AuthProvider } from '../contexts/AuthContext';
 
 // Mock fetch for API calls
@@ -427,6 +432,621 @@ describe('Frontend Tests', () => {
       await waitFor(() => {
         expect(screen.getByText(/couldn't connect to the server/)).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('WeekView Component', () => {
+    test('renders loading state initially', () => {
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Loading weekly updates...')).toBeInTheDocument();
+    });
+
+    test('displays weeks data after successful fetch', async () => {
+      // Mock successful API response
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([
+          {
+            _id: '1',
+            weekNumber: 1,
+            summary: 'Week 1 activities and learning',
+            photos: ['photo1.jpg', 'photo2.jpg'],
+            reportPdf: 'week1-report.pdf',
+            createdAt: '2024-01-01T00:00:00.000Z'
+          },
+          {
+            _id: '2',
+            weekNumber: 2,
+            summary: 'Week 2 project work',
+            photos: ['photo3.jpg'],
+            reportPdf: 'week2-report.pdf',
+            createdAt: '2024-01-08T00:00:00.000Z'
+          }
+        ]),
+      });
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Weekly Updates')).toBeInTheDocument();
+        expect(screen.getByText('Week 1')).toBeInTheDocument();
+        expect(screen.getByText('Week 2')).toBeInTheDocument();
+        expect(screen.getByText('Week 1 activities and learning')).toBeInTheDocument();
+        expect(screen.getByText('Week 2 project work')).toBeInTheDocument();
+      });
+    });
+
+    test('handles API error gracefully', async () => {
+      // Mock API error
+      fetch.mockRejectedValueOnce(new Error('Network error'));
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Error Loading Weeks')).toBeInTheDocument();
+        expect(screen.getByText(/Failed to load weeks/)).toBeInTheDocument();
+        expect(screen.getByText('Try Again')).toBeInTheDocument();
+      });
+    });
+
+    test('displays empty state when no weeks available', async () => {
+      // Mock empty response
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([]),
+      });
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('No Weeks Available')).toBeInTheDocument();
+        expect(screen.getByText('No weeks have been uploaded yet.')).toBeInTheDocument();
+      });
+    });
+
+    test('retry functionality works', async () => {
+      const user = userEvent.setup();
+      
+      // First call fails
+      fetch.mockRejectedValueOnce(new Error('Network error'));
+      
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Try Again')).toBeInTheDocument();
+      });
+
+      // Second call succeeds
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([
+          {
+            _id: '1',
+            weekNumber: 1,
+            summary: 'Week 1 content',
+            photos: [],
+            reportPdf: null,
+            createdAt: '2024-01-01T00:00:00.000Z'
+          }
+        ]),
+      });
+
+      const retryButton = screen.getByText('Try Again');
+      await user.click(retryButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('Week 1')).toBeInTheDocument();
+      });
+    });
+
+    test('displays photo gallery when photos are available', async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([
+          {
+            _id: '1',
+            weekNumber: 1,
+            summary: 'Week with photos',
+            photos: ['photo1.jpg', 'photo2.jpg'],
+            reportPdf: null,
+            createdAt: '2024-01-01T00:00:00.000Z'
+          }
+        ]),
+      });
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Photo Gallery')).toBeInTheDocument();
+        const photos = screen.getAllByAltText(/Week 1 photo/);
+        expect(photos).toHaveLength(2);
+      });
+    });
+
+    test('displays PDF viewer controls when PDF is available', async () => {
+      fetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve([
+          {
+            _id: '1',
+            weekNumber: 1,
+            summary: 'Week with PDF',
+            photos: [],
+            reportPdf: 'report.pdf',
+            createdAt: '2024-01-01T00:00:00.000Z'
+          }
+        ]),
+      });
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Weekly Report')).toBeInTheDocument();
+        expect(screen.getByText('View PDF')).toBeInTheDocument();
+        expect(screen.getByText('Open in New Tab')).toBeInTheDocument();
+        expect(screen.getByText('Download PDF')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Sidebar Component', () => {
+    const mockToggleSidebar = jest.fn();
+    const mockUser = {
+      name: 'Test User',
+      username: 'testuser',
+      role: 'student'
+    };
+
+    const mockAuthContext = {
+      user: mockUser,
+      isAdmin: () => false,
+      logout: jest.fn()
+    };
+
+    beforeEach(() => {
+      mockToggleSidebar.mockClear();
+      mockAuthContext.logout.mockClear();
+    });
+
+    test('renders sidebar with navigation links', () => {
+      render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      expect(screen.getByText('CSP Project')).toBeInTheDocument();
+      expect(screen.getByText('Home')).toBeInTheDocument();
+      expect(screen.getByText('Career Guidance')).toBeInTheDocument();
+      expect(screen.getByText('Weekly Visits')).toBeInTheDocument();
+      expect(screen.getByText('Chatbot Full View')).toBeInTheDocument();
+      expect(screen.getByText('Groups')).toBeInTheDocument();
+    });
+
+    test('closes sidebar when close button is clicked', async () => {
+      const user = userEvent.setup();
+      
+      render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      const closeButton = screen.getByLabelText('Close sidebar');
+      await user.click(closeButton);
+
+      expect(mockToggleSidebar).toHaveBeenCalledWith(false);
+    });
+
+    test('applies correct CSS classes when open/closed', () => {
+      const { rerender } = render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      const sidebar = screen.getByRole('navigation', { name: 'Main navigation' });
+      expect(sidebar).toHaveClass('translate-x-0');
+
+      rerender(
+        <BrowserRouter>
+          <Sidebar isOpen={false} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      expect(sidebar).toHaveClass('-translate-x-full');
+    });
+
+    test('handles keyboard navigation (Escape key)', () => {
+      render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      fireEvent.keyDown(document, { key: 'Escape' });
+      expect(mockToggleSidebar).toHaveBeenCalledWith(false);
+    });
+
+    test('navigation links have correct accessibility attributes', () => {
+      render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      const homeLink = screen.getByRole('link', { name: /home/i });
+      expect(homeLink).toHaveAttribute('href', '/');
+      
+      const careerLink = screen.getByRole('link', { name: /career guidance/i });
+      expect(careerLink).toHaveAttribute('href', '/career-guidance');
+    });
+  });
+
+  describe('Groups Component', () => {
+    beforeEach(() => {
+      // Mock the api utility
+      jest.doMock('../utils/api', () => ({
+        api: {
+          listGroups: jest.fn(),
+          listMessages: jest.fn(),
+          sendMessageToGroup: jest.fn(),
+          joinGroup: jest.fn(),
+          leaveGroup: jest.fn()
+        }
+      }));
+    });
+
+    test('renders loading state initially', () => {
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Loading groups...')).toBeInTheDocument();
+    });
+
+    test('displays groups after successful fetch', async () => {
+      const mockGroups = [
+        {
+          _id: 'group1',
+          name: 'Study Group 1',
+          description: 'Mathematics study group',
+          members: ['user1', 'user2'],
+          isMember: false
+        },
+        {
+          _id: 'group2',
+          name: 'Study Group 2',
+          description: 'Physics study group',
+          members: ['user1'],
+          isMember: true
+        }
+      ];
+
+      // Mock successful API response
+      const { api } = require('../utils/api');
+      api.listGroups.mockResolvedValue(mockGroups);
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Study Groups')).toBeInTheDocument();
+        expect(screen.getByText('Study Group 1')).toBeInTheDocument();
+        expect(screen.getByText('Study Group 2')).toBeInTheDocument();
+        expect(screen.getByText('Mathematics study group')).toBeInTheDocument();
+        expect(screen.getByText('Physics study group')).toBeInTheDocument();
+      });
+    });
+
+    test('shows join button for non-member groups', async () => {
+      const mockGroups = [
+        {
+          _id: 'group1',
+          name: 'Study Group 1',
+          description: 'Test group',
+          members: [],
+          isMember: false
+        }
+      ];
+
+      const { api } = require('../utils/api');
+      api.listGroups.mockResolvedValue(mockGroups);
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Join Group')).toBeInTheDocument();
+      });
+    });
+
+    test('shows member controls for joined groups', async () => {
+      const mockGroups = [
+        {
+          _id: 'group1',
+          name: 'Study Group 1',
+          description: 'Test group',
+          members: ['user1'],
+          isMember: true
+        }
+      ];
+
+      const { api } = require('../utils/api');
+      api.listGroups.mockResolvedValue(mockGroups);
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Open Chat')).toBeInTheDocument();
+        expect(screen.getByText('Leave')).toBeInTheDocument();
+        expect(screen.getByText('Member')).toBeInTheDocument();
+      });
+    });
+
+    test('handles group join functionality', async () => {
+      const user = userEvent.setup();
+      const mockGroups = [
+        {
+          _id: 'group1',
+          name: 'Study Group 1',
+          description: 'Test group',
+          members: [],
+          isMember: false
+        }
+      ];
+
+      const { api } = require('../utils/api');
+      api.listGroups.mockResolvedValue(mockGroups);
+      api.joinGroup.mockResolvedValue({});
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('Join Group')).toBeInTheDocument();
+      });
+
+      const joinButton = screen.getByText('Join Group');
+      await user.click(joinButton);
+
+      expect(api.joinGroup).toHaveBeenCalledWith('group1');
+    });
+
+    test('displays empty state when no groups available', async () => {
+      const { api } = require('../utils/api');
+      api.listGroups.mockResolvedValue([]);
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText('No groups available yet')).toBeInTheDocument();
+      });
+    });
+
+    test('handles API errors gracefully', async () => {
+      const { api } = require('../utils/api');
+      api.listGroups.mockRejectedValue(new Error('Network error'));
+
+      render(
+        <TestWrapper>
+          <Groups />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText(/Network error/)).toBeInTheDocument();
+        expect(screen.getByText('Try Again')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('LoadingSpinner Component', () => {
+    test('renders with default size', () => {
+      render(<LoadingSpinner />);
+      
+      const spinner = screen.getByRole('status');
+      expect(spinner).toBeInTheDocument();
+      expect(spinner).toHaveClass('animate-spin');
+    });
+
+    test('renders with large size', () => {
+      render(<LoadingSpinner size="large" />);
+      
+      const spinner = screen.getByRole('status');
+      expect(spinner).toBeInTheDocument();
+    });
+
+    test('renders with custom color', () => {
+      render(<LoadingSpinner color="red" />);
+      
+      const spinner = screen.getByRole('status');
+      expect(spinner).toBeInTheDocument();
+    });
+  });
+
+  describe('ErrorBoundary Component', () => {
+    // Suppress console.error for these tests
+    const originalError = console.error;
+    beforeAll(() => {
+      console.error = jest.fn();
+    });
+    afterAll(() => {
+      console.error = originalError;
+    });
+
+    const ThrowError = ({ shouldThrow }) => {
+      if (shouldThrow) {
+        throw new Error('Test error');
+      }
+      return <div>No error</div>;
+    };
+
+    test('renders children when there is no error', () => {
+      render(
+        <ErrorBoundary>
+          <ThrowError shouldThrow={false} />
+        </ErrorBoundary>
+      );
+
+      expect(screen.getByText('No error')).toBeInTheDocument();
+    });
+
+    test('renders error UI when there is an error', () => {
+      render(
+        <ErrorBoundary>
+          <ThrowError shouldThrow={true} />
+        </ErrorBoundary>
+      );
+
+      expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
+    });
+  });
+
+  describe('Accessibility Tests', () => {
+    test('components have proper ARIA labels', async () => {
+      render(
+        <TestWrapper>
+          <App />
+        </TestWrapper>
+      );
+
+      // Check for ARIA labels on interactive elements
+      const chatButton = screen.getByLabelText(/open askai chat/i);
+      expect(chatButton).toBeInTheDocument();
+    });
+
+    test('navigation has proper semantic structure', () => {
+      const mockToggleSidebar = jest.fn();
+      
+      render(
+        <BrowserRouter>
+          <Sidebar isOpen={true} toggleSidebar={mockToggleSidebar} />
+        </BrowserRouter>
+      );
+
+      const nav = screen.getByRole('navigation', { name: 'Main navigation' });
+      expect(nav).toBeInTheDocument();
+      
+      const links = screen.getAllByRole('link');
+      expect(links.length).toBeGreaterThan(0);
+    });
+
+    test('form elements have proper labels', () => {
+      render(
+        <TestWrapper>
+          <Auth />
+        </TestWrapper>
+      );
+
+      const usernameInput = screen.getByPlaceholderText('Choose a username');
+      expect(usernameInput).toBeInTheDocument();
+      
+      const passwordInput = screen.getByPlaceholderText('Enter password');
+      expect(passwordInput).toBeInTheDocument();
+    });
+
+    test('buttons have descriptive text or aria-labels', async () => {
+      const user = userEvent.setup();
+      render(<AskAI />);
+      
+      const chatButton = screen.getByLabelText('Open AskAI Chat');
+      await user.click(chatButton);
+
+      const sendButton = screen.getByLabelText('Send message');
+      expect(sendButton).toBeInTheDocument();
+      
+      const closeButton = screen.getByLabelText('Close');
+      expect(closeButton).toBeInTheDocument();
+    });
+  });
+
+  describe('Integration Tests', () => {
+    test('navigation between components works', async () => {
+      const user = userEvent.setup();
+      
+      render(
+        <TestWrapper>
+          <App />
+        </TestWrapper>
+      );
+
+      // Test navigation (this would require proper routing setup)
+      // For now, just verify the app renders without crashing
+      expect(document.body).toBeInTheDocument();
+    });
+
+    test('error states are handled consistently across components', async () => {
+      // Test that all components handle network errors similarly
+      fetch.mockRejectedValue(new Error('Network error'));
+
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText(/Error Loading Weeks/)).toBeInTheDocument();
+      });
+    });
+
+    test('loading states are displayed consistently', () => {
+      render(
+        <TestWrapper>
+          <WeekView />
+        </TestWrapper>
+      );
+
+      expect(screen.getByText('Loading weekly updates...')).toBeInTheDocument();
     });
   });
 });

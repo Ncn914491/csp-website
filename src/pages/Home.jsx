@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { api } from '../utils/api';
 import weeksData from '../data/weeks';
 
 function Home() {
   const [visits, setVisits] = useState([]);
   const [weeklyUpdates, setWeeklyUpdates] = useState([]);
+  const [gridfsWeeks, setGridfsWeeks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalWeeks: 0,
+    totalPhotos: 0,
+    totalReports: 0
+  });
 
   useEffect(() => {
     loadData();
@@ -14,16 +21,39 @@ function Home() {
 
   const loadData = async () => {
     try {
-      const [visitsData, weeksData] = await Promise.all([
-        api.getVisits(),
-        api.getWeeks()
+      const [visitsData, weeksData, gridfsData] = await Promise.all([
+        api.getVisits().catch(() => []),
+        api.getWeeks().catch(() => []),
+        fetchGridfsWeeks().catch(() => [])
       ]);
+      
       setVisits(visitsData.slice(0, 3)); // Show latest 3 visits
       setWeeklyUpdates(weeksData.slice(0, 3)); // Show latest 3 weeks
+      setGridfsWeeks(gridfsData.slice(0, 6)); // Show latest 6 GridFS weeks
+      
+      // Calculate stats
+      const totalPhotos = gridfsData.reduce((sum, week) => sum + (week.photos?.length || 0), 0);
+      const totalReports = gridfsData.filter(week => week.reportPdf).length;
+      
+      setStats({
+        totalWeeks: gridfsData.length,
+        totalPhotos,
+        totalReports
+      });
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchGridfsWeeks = async () => {
+    try {
+      const response = await axios.get('/api/gridfs-weeks');
+      return response.data || [];
+    } catch (error) {
+      console.error('Error fetching GridFS weeks:', error);
+      return [];
     }
   };
 
@@ -42,15 +72,30 @@ function Home() {
           <p className="mt-3 text-xl text-blue-100">
             Documenting our journey, sharing our progress, and making a difference in the community.
           </p>
+          
+          {/* Stats Section */}
+          <div className="mt-8 grid grid-cols-3 gap-4 max-w-md mx-auto">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white">{stats.totalWeeks}</div>
+              <div className="text-sm text-blue-100">Weeks</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white">{stats.totalPhotos}</div>
+              <div className="text-sm text-blue-100">Photos</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white">{stats.totalReports}</div>
+              <div className="text-sm text-blue-100">Reports</div>
+            </div>
+          </div>
+          
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            {latestWeek && (
-              <Link
-                to={`/week/${latestWeek.id}`}
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors duration-200"
-              >
-                View Latest Week
-              </Link>
-            )}
+            <Link
+              to="/weekly-visits"
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors duration-200"
+            >
+              View All Weeks
+            </Link>
             <Link
               to="/career-guidance"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-700 bg-opacity-60 hover:bg-opacity-70 transition-colors duration-200"
@@ -150,11 +195,91 @@ function Home() {
         </section>
       )}
 
-      {/* Weekly Updates from API */}
+      {/* GridFS Weekly Updates */}
+      {!loading && gridfsWeeks.length > 0 && (
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Recent Weekly Updates</h2>
+            <Link to="/weekly-visits" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              View all weeks →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {gridfsWeeks.map((week) => (
+              <div key={week._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                {/* Week Header */}
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Week {week.weekNumber}</h3>
+                    <span className="text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
+                      {new Date(week.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Photo Preview */}
+                {week.photos && week.photos.length > 0 && (
+                  <div className="h-32 bg-gray-100 overflow-hidden">
+                    <img
+                      src={`/api/gridfs-weeks/file/${week.photos[0]}`}
+                      alt={`Week ${week.weekNumber} preview`}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div className="w-full h-full hidden items-center justify-center bg-gray-100 text-gray-400">
+                      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Content */}
+                <div className="p-4">
+                  <p className="text-sm text-gray-600 line-clamp-3 mb-3">
+                    {week.summary}
+                  </p>
+                  
+                  {/* Stats */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {week.photos?.length || 0} photos
+                    </span>
+                    {week.reportPdf && (
+                      <span className="flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Report
+                      </span>
+                    )}
+                  </div>
+                  
+                  {/* Action Button */}
+                  <Link
+                    to="/weekly-visits"
+                    className="block w-full text-center px-4 py-2 bg-blue-50 text-blue-600 text-sm font-medium rounded-md hover:bg-blue-100 transition-colors"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Legacy Weekly Updates from API */}
       {!loading && weeklyUpdates.length > 0 && (
         <section className="mb-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Weekly Updates</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Legacy Updates</h2>
             <Link to="/weekly-updates" className="text-blue-600 hover:text-blue-800 text-sm font-medium">
               View all updates →
             </Link>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { motion } from 'framer-motion';
 
@@ -15,7 +15,16 @@ function Auth() {
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const location = useLocation();
+  const { login, register, user } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,17 +41,22 @@ function Auth() {
         }
 
         await register(formData.username, formData.password, 'student');
-        navigate('/');
+        
+        // Redirect to intended page or home
+        const from = location.state?.from?.pathname || '/';
+        navigate(from, { replace: true });
       } else {
         // Admin Sign In or Student Sign In
-        const role = isAdmin ? 'admin' : 'student';
         const response = await login(formData.username, formData.password);
         
-        // Redirect based on role
-        if (response.user.role === 'admin') {
-          navigate('/admin');
+        // Redirect to intended page or default based on role
+        const from = location.state?.from?.pathname;
+        if (from) {
+          navigate(from, { replace: true });
+        } else if (response.user.role === 'admin') {
+          navigate('/admin', { replace: true });
         } else {
-          navigate('/');
+          navigate('/', { replace: true });
         }
       }
     } catch (err) {

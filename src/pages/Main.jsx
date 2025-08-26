@@ -8,6 +8,7 @@ function Main() {
   const [schoolVisits, setSchoolVisits] = useState([]);
   const [weeklyUpdates, setWeeklyUpdates] = useState([]);
   const [resources, setResources] = useState([]);
+  const [careerPdfId, setCareerPdfId] = useState(null);
   const [expandedBoxes, setExpandedBoxes] = useState({});
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,20 @@ function Main() {
       setSchoolVisits(visitsData);
       setWeeklyUpdates(weeksData);
       setResources(resourcesData);
+      
+      // Also fetch GridFS weeks to discover Career PDF (weekNumber 0)
+      try {
+        const resp = await fetch('/api/gridfs-weeks');
+        if (resp.ok) {
+          const gridWeeks = await resp.json();
+          const career = Array.isArray(gridWeeks) ? gridWeeks.find(w => Number(w.weekNumber) === 0) : null;
+          if (career && career.reportPdf) {
+            setCareerPdfId(career.reportPdf);
+          }
+        }
+      } catch (_) {
+        // ignore optional failure
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -283,7 +298,7 @@ function Main() {
             
             <div className="flex flex-col space-y-2">
               <a
-                href="/public/career.pdf"
+                href={careerPdfId ? `/api/gridfs-weeks/file/${careerPdfId}` : '/public/career.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -294,7 +309,7 @@ function Main() {
                 Download PDF
               </a>
               <a
-                href="/public/career.pdf"
+                href={careerPdfId ? `/api/gridfs-weeks/file/${careerPdfId}` : '/public/career.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium text-center"
