@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../utils/api';
 import { motion } from 'framer-motion';
+import '../styles/Main.css';
 
 function Main() {
   const [schoolVisits, setSchoolVisits] = useState([]);
@@ -28,18 +29,20 @@ function Main() {
         api.getResources()
       ]);
 
-      setSchoolVisits(visitsData);
-      setWeeklyUpdates(weeksData);
-      setResources(resourcesData);
+      // Ensure data is in array format
+      setSchoolVisits(Array.isArray(visitsData) ? visitsData : visitsData?.data || []);
+      setWeeklyUpdates(Array.isArray(weeksData) ? weeksData : weeksData?.data || []);
+      setResources(Array.isArray(resourcesData) ? resourcesData : resourcesData?.data || []);
       
-      // Also fetch GridFS weeks to discover Career PDF (weekNumber 0)
+      // Also fetch weeks to discover Career PDF (weekNumber 0)
       try {
-        const resp = await fetch('/api/gridfs-weeks');
+        const resp = await fetch('/api/weeks');
         if (resp.ok) {
-          const gridWeeks = await resp.json();
+          const result = await resp.json();
+          const gridWeeks = result.data || result || [];
           const career = Array.isArray(gridWeeks) ? gridWeeks.find(w => Number(w.weekNumber) === 0) : null;
-          if (career && career.reportPdf) {
-            setCareerPdfId(career.reportPdf);
+          if (career && (career.reportPdf || career.reportFile)) {
+            setCareerPdfId(career.reportPdf || career.reportFile);
           }
         }
       } catch (_) {
@@ -238,7 +241,7 @@ function Main() {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {weeklyUpdates.map((week) => (
+          {Array.isArray(weeklyUpdates) && weeklyUpdates.length > 0 ? weeklyUpdates.map((week) => (
             <div
               key={week._id}
               onClick={() => setSelectedWeek(week)}
@@ -274,7 +277,17 @@ function Main() {
                 View Full Report →
               </button>
             </div>
-          ))}
+          )) : (
+            <div className="col-span-full text-center py-12">
+              <div className="text-gray-500">
+                <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 className="text-lg font-medium text-gray-600 mb-2">No Weekly Updates Available</h3>
+                <p className="text-gray-500">Weekly reports will appear here once they are uploaded.</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -298,7 +311,7 @@ function Main() {
             
             <div className="flex flex-col space-y-2">
               <a
-                href={careerPdfId ? `/api/gridfs-weeks/file/${careerPdfId}` : '/public/career.pdf'}
+                href={careerPdfId ? `/api/weeks/file/${careerPdfId}` : '/public/career.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -309,7 +322,7 @@ function Main() {
                 Download PDF
               </a>
               <a
-                href={careerPdfId ? `/api/gridfs-weeks/file/${careerPdfId}` : '/public/career.pdf'}
+                href={careerPdfId ? `/api/weeks/file/${careerPdfId}` : '/public/career.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium text-center"
@@ -320,7 +333,7 @@ function Main() {
           </div>
           
           {/* Additional Resources from API */}
-          {resources.slice(0, 4).map((resource) => (
+          {Array.isArray(resources) && resources.length > 0 ? resources.slice(0, 4).map((resource) => (
             <div key={resource._id} className="backdrop-blur-lg bg-white/60 rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-gray-800">{resource.title}</h3>
@@ -355,10 +368,10 @@ function Main() {
                 Access Resource
               </a>
             </div>
-          ))}
+          )) : null}
           
           {/* Show More Resources Button */}
-          {resources.length > 4 && (
+          {Array.isArray(resources) && resources.length > 4 && (
             <div className="backdrop-blur-lg bg-white/60 rounded-2xl p-6 border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center">
               <span className="text-4xl mb-4">📂</span>
               <h3 className="text-lg font-bold text-gray-800 mb-2">More Resources</h3>
@@ -463,117 +476,7 @@ function Main() {
         </div>
       )}
 
-      {/* Add custom animations and glassmorphism effects */}
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes liquid-float {
-          0%, 100% {
-            transform: translateY(0) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-10px) rotate(2deg);
-          }
-        }
-        
-        @keyframes glass-shimmer {
-          0% {
-            background-position: -200px 0;
-          }
-          100% {
-            background-position: calc(200px + 100%) 0;
-          }
-        }
-        
-        @keyframes gradient-shift {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-        
-        .animate-liquid-float {
-          animation: liquid-float 6s ease-in-out infinite;
-        }
-        
-        .glass-card {
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .glass-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            transparent
-          );
-          transition: left 0.5s;
-        }
-        
-        .glass-card:hover::before {
-          left: 100%;
-        }
-        
-        .gradient-bg {
-          background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-          background-size: 400% 400%;
-          animation: gradient-shift 15s ease infinite;
-        }
-        
-        .glass-morphism {
-          backdrop-filter: blur(16px) saturate(180%);
-          -webkit-backdrop-filter: blur(16px) saturate(180%);
-          background-color: rgba(255, 255, 255, 0.75);
-          border: 1px solid rgba(255, 255, 255, 0.125);
-          box-shadow: 
-            0 8px 32px 0 rgba(31, 38, 135, 0.37),
-            inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-        }
-        
-        .glass-morphism-dark {
-          backdrop-filter: blur(16px) saturate(180%);
-          -webkit-backdrop-filter: blur(16px) saturate(180%);
-          background-color: rgba(17, 25, 40, 0.75);
-          border: 1px solid rgba(255, 255, 255, 0.125);
-          box-shadow: 
-            0 8px 32px 0 rgba(31, 38, 135, 0.37),
-            inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }
-      `}</style>
+
     </div>
   );
 }

@@ -34,6 +34,13 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
 
+    // Listen for auth expiry events from API calls
+    const handleAuthExpired = () => {
+      handleSessionExpiry();
+    };
+
+    window.addEventListener('auth-expired', handleAuthExpired);
+
     // Set up token expiry check interval
     const interval = setInterval(() => {
       const tokenExpiry = localStorage.getItem('tokenExpiry');
@@ -47,7 +54,10 @@ export const AuthProvider = ({ children }) => {
       }
     }, 60000); // Check every minute
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('auth-expired', handleAuthExpired);
+    };
   }, []);
 
   const handleSessionExpiry = () => {
@@ -61,11 +71,21 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const response = await api.getCurrentUser();
-      setUser(response.user);
-      setSessionExpired(false);
+      if (response && response.user) {
+        setUser(response.user);
+        setSessionExpired(false);
+      } else {
+        throw new Error('Invalid response from server');
+      }
     } catch (error) {
       console.error('Auth check failed:', error);
-      handleSessionExpiry();
+      // Only handle session expiry if it's an auth error
+      if (error.message.includes('expired') || error.message.includes('invalid') || error.message.includes('401')) {
+        handleSessionExpiry();
+      } else {
+        // For other errors, just set loading to false but keep user logged in
+        console.warn('Auth check failed but keeping user logged in:', error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -75,15 +95,20 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.login({ username, password });
       
-      // Store token and set expiry (24 hours from now)
-      const expiryTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('tokenExpiry', expiryTime.toString());
-      
-      setUser(response.user);
-      setSessionExpired(false);
-      return response;
+      if (response.token && response.user) {
+        // Store token and set expiry (24 hours from now)
+        const expiryTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('tokenExpiry', expiryTime.toString());
+        
+        setUser(response.user);
+        setSessionExpired(false);
+        return response;
+      } else {
+        throw new Error('Invalid response from server');
+      }
     } catch (error) {
+      console.error('Login error:', error);
       throw error;
     }
   };
@@ -91,18 +116,28 @@ export const AuthProvider = ({ children }) => {
   const register = async (username, password, role = 'student') => {
     try {
       const response = await api.register({ username, password, role });
-      // Registration doesn't return a token, so we need to login after registration
-      const loginResponse = await api.login({ username, password });
       
-      // Store token and set expiry (24 hours from now)
-      const expiryTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-      localStorage.setItem('token', loginResponse.token);
-      localStorage.setItem('tokenExpiry', expiryTime.toString());
-      
-      setUser(loginResponse.user);
-      setSessionExpired(false);
-      return loginResponse;
+      if (response.message === 'User created successfully') {
+        // Registration successful, now login
+        const loginResponse = await api.login({ username, password });
+        
+        if (loginResponse.token && loginResponse.user) {
+          // Store token and set expiry (24 hours from now)
+          const expiryTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+          localStorage.setItem('token', loginResponse.token);
+          localStorage.setItem('tokenExpiry', expiryTime.toString());
+          
+          setUser(loginResponse.user);
+          setSessionExpired(false);
+          return loginResponse;
+        } else {
+          throw new Error('Login failed after registration');
+        }
+      } else {
+        throw new Error('Registration failed');
+      }
     } catch (error) {
+      console.error('Registration error:', error);
       throw error;
     }
   };

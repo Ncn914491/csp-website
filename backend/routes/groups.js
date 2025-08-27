@@ -3,7 +3,44 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Group = require('../models/Group');
 const Message = require('../models/Message');
-const { auth, adminAuth } = require('../middleware/auth');
+const jwtMiddleware = require('../jwtMiddleware');
+
+// Create auth middleware that works with both MongoDB and local data
+const auth = async (req, res, next) => {
+  try {
+    if (req.isMongoConnected) {
+      return jwtMiddleware(req, res, next);
+    } else {
+      // For local data mode, skip auth for development
+      req.user = { _id: 'local-user', username: 'local', role: 'student' };
+      next();
+    }
+  } catch (error) {
+    console.error('Auth middleware error:', error);
+    res.status(401).json({ message: 'Authentication failed', error: error.message });
+  }
+};
+
+const adminAuth = async (req, res, next) => {
+  try {
+    if (req.isMongoConnected) {
+      return jwtMiddleware(req, res, (err) => {
+        if (err) return res.status(401).json({ message: 'Authentication failed' });
+        if (req.user.role !== 'admin') {
+          return res.status(403).json({ message: 'Admin access required' });
+        }
+        next();
+      });
+    } else {
+      // For local data mode, skip auth for development
+      req.user = { _id: 'local-admin', username: 'admin', role: 'admin' };
+      next();
+    }
+  } catch (error) {
+    console.error('Admin auth middleware error:', error);
+    res.status(401).json({ message: 'Authentication failed', error: error.message });
+  }
+};
 
 // Helper function to validate ObjectId
 const isValidObjectId = (id) => {
@@ -143,7 +180,7 @@ router.get('/', auth, async (req, res) => {
           sender: lastMessage.userId?.name || 'Unknown',
           timestamp: lastMessage.createdAt
         } : null,
-        userIsMember: group.members.some(member => 
+        isMember: group.members.some(member => 
           member._id.toString() === req.user._id.toString()
         )
       };

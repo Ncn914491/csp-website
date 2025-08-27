@@ -38,8 +38,9 @@ const CareerGuidance = () => {
       setFilesError(null);
       
       // Fetch weeks data to find career guidance files (week 0)
-      const response = await axios.get('/api/gridfs-weeks');
-      const weeks = response.data || [];
+      const response = await axios.get('/api/weeks');
+      const result = response.data || {};
+      const weeks = result.data || result || [];
       
       // Find career guidance entries (weekNumber 0 or specific career files)
       const careerEntries = weeks.filter(week => 
@@ -50,7 +51,7 @@ const CareerGuidance = () => {
       setCareerFiles(careerEntries);
       
       // Auto-select first file if available
-      if (careerEntries.length > 0 && careerEntries[0].reportPdf) {
+      if (careerEntries.length > 0 && (careerEntries[0].reportFile || careerEntries[0].reportPdf)) {
         setSelectedFile(careerEntries[0]);
       }
     } catch (error) {
@@ -205,7 +206,7 @@ const CareerGuidance = () => {
                                 </p>
                               </div>
                               <div className="flex items-center space-x-2">
-                                {file.reportPdf && (
+                                {(file.reportFile || file.reportPdf) && (
                                   <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">
                                     PDF
                                   </span>
@@ -228,7 +229,7 @@ const CareerGuidance = () => {
                         <div className="flex items-center justify-between">
                           <h3 className="text-lg font-semibold text-gray-800">Document Viewer</h3>
                           <div className="flex space-x-2">
-                            {selectedFile.reportPdf && (
+                            {(selectedFile.reportFile || selectedFile.reportPdf) && (
                               <>
                                 <button
                                   onClick={() => setShowViewer(!showViewer)}
@@ -237,7 +238,7 @@ const CareerGuidance = () => {
                                   {showViewer ? 'Hide Viewer' : 'Show Viewer'}
                                 </button>
                                 <a
-                                  href={`/api/gridfs-weeks/file/${selectedFile.reportPdf}`}
+                                  href={`/api/gridfs/${selectedFile.reportFile || selectedFile.reportPdf}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
@@ -245,7 +246,7 @@ const CareerGuidance = () => {
                                   Open in New Tab
                                 </a>
                                 <a
-                                  href={`/api/gridfs-weeks/file/${selectedFile.reportPdf}`}
+                                  href={`/api/gridfs/${selectedFile.reportFile || selectedFile.reportPdf}`}
                                   download
                                   className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                                 >
@@ -256,9 +257,9 @@ const CareerGuidance = () => {
                           </div>
                         </div>
 
-                        {showViewer && selectedFile.reportPdf && (
+                        {showViewer && (selectedFile.reportFile || selectedFile.reportPdf) && (
                           <div className="border rounded-lg overflow-hidden">
-                            <PdfViewer src={`/api/gridfs-weeks/file/${selectedFile.reportPdf}`} />
+                            <PdfViewer src={`/api/gridfs/${selectedFile.reportFile || selectedFile.reportPdf}`} />
                           </div>
                         )}
 
@@ -270,10 +271,10 @@ const CareerGuidance = () => {
                               {selectedFile.photos.map((photoId, index) => (
                                 <div key={photoId} className="relative group">
                                   <img
-                                    src={`/api/gridfs-weeks/file/${photoId}`}
+                                    src={`/api/gridfs/${photoId}`}
                                     alt={`Career guidance image ${index + 1}`}
                                     className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                                    onClick={() => window.open(`/api/gridfs-weeks/file/${photoId}`, '_blank')}
+                                    onClick={() => window.open(`/api/gridfs/${photoId}`, '_blank')}
                                     onError={(e) => {
                                       e.target.src = '/placeholder-image.jpg';
                                       e.target.alt = 'Image not available';

@@ -28,6 +28,77 @@
 
 - [x] 2.2 Implement groups API endpoints
 
+Project: MERN stack student career guidance app.  
+Stack: React frontend + Node.js/Express backend + MongoDB Atlas (GridFS).  
+Deployment: local dev, later to Vercel.  
+
+Current Problems & Errors:
+1. **Groups Feature**
+   - `/api/groups` returns 401 Unauthorized.  
+   - Console error: "Token is not valid".  
+   - Login `/api/login` fails with "Invalid credentials".  
+   - Root cause: JWT not issued/stored/verified correctly.  
+
+   **Fix Required:**  
+   - Implement working login with seeded admin user (`admin/admin123`).  
+   - Ensure backend signs JWT with `JWT_SECRET`.  
+   - Store JWT in localStorage and attach as `Authorization: Bearer <token>` in all requests.  
+   - Update `api.js` to always include token.  
+   - Verify `/api/groups` fetch works and groups render without crashing.  
+
+2. **Weekly Visits (GridFS)**  
+   - Only weeks 4 and 5 load photos and PDFs. Weeks 1–3, 6–8 show empty.  
+   - `/api/gridfs-weeks` → 404 Not Found.  
+   - Error: “Error loading career files: AxiosError”.  
+
+   **Fix Required:**  
+   - Backend: implement `/api/gridfs-weeks` to list available weeks from DB.  
+   - Ensure response contains metadata: `{ weekNumber, photos: [fileIds], reportFile: fileId }`.  
+   - Frontend: map ObjectIds → download URLs (`/api/gridfs/:id`).  
+   - Display data for only the uploaded 5 weeks; keep other weeks empty without breaking UI.  
+
+3. **UI / Rendering**  
+   - Console warning: `Received 'true' for non-boolean attribute 'jsx'`.  
+   - Location: `AskAI.jsx` → `<style jsx={true}>`.  
+
+   **Fix Required:**  
+   - Replace with `<style jsx="true">` or just `<style>` (if Tailwind/regular CSS is used).  
+
+4. **Career Guidance Viewer**  
+   - Current `careerGuidance.pdf` is corrupted and fails to open.  
+   - Requirement: replace with working file `csp.pptx`.  
+   - PDF viewer is breaking since file is not PDF.  
+
+   **Fix Required:**  
+   - For PDFs: use `react-pdf` viewer.  
+   - For PPT (like `csp.pptx`): render via Office Web Viewer:  
+     ```jsx
+     <iframe 
+       src="https://view.officeapps.live.com/op/embed.aspx?src=<publicFileURL>" 
+       width="100%" height="600" frameBorder="0">
+     </iframe>
+     ```  
+   - Ensure GridFS returns correct file URLs for frontend.  
+
+5. **Auth Protected Routes**  
+   - `/api/protected` returns 401 Unauthorized.  
+   - Token verification failing in `authMiddleware`.  
+
+   **Fix Required:**  
+   - Ensure `authMiddleware` extracts `Authorization: Bearer <token>` correctly.  
+   - Use `jwt.verify(token, process.env.JWT_SECRET)`.  
+   - Add error logging for expired/invalid tokens.  
+
+Deliverables:
+- Groups fully working (admin can create groups, students can join and chat).  
+- Weekly visits: weeks 1–3, 6–8 show empty placeholders; weeks 4–5 load files from GridFS.  
+- Career Guidance: display `csp.pptx` instead of broken PDF.  
+- Auth flow fixed (login works, JWT persists, routes authorized).  
+- Remove JSX prop warnings.  
+- Backend `/api/gridfs-weeks` + `/api/gridfs/:id` implemented and returning correct data.  
+- Integration test: login → view weeks → open career guidance PPT → join group → chatbot responds correctly.  
+
+Goal: App should run without console errors, all features integrated, and dynamic data pulled from MongoDB.
 
   - Create group management routes (create, list, join, leave)
   - Implement message handling routes for group chat
@@ -165,8 +236,12 @@
   - Add cross-browser compatibility tests
   - _Requirements: 7.3_
 
-- [ ] 7. Application Integration and Optimization
+- [-] 7. Application Integration and Optimization
+
+
 - [ ] 7.1 Integrate all components and test full application
+
+
   - Connect all frontend components with backend APIs
   - Test complete user workflows from login to feature usage
   - Verify all GridFS file streaming works correctly in browser

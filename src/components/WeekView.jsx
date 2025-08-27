@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorBoundary from "./ErrorBoundary";
 import PdfViewer from "./PdfViewer";
+import PptViewer from "./PptViewer";
+import { API_URL } from "../config";
+import { api } from "../utils/api";
 
 // Photo Gallery Modal Component
 const PhotoModal = ({ isOpen, onClose, photos, currentIndex, onNavigate }) => {
@@ -55,13 +57,24 @@ const PhotoModal = ({ isOpen, onClose, photos, currentIndex, onNavigate }) => {
         )}
         
         <img
-          src={`/api/gridfs-weeks/file/${photos[currentIndex]}`}
+          src={`${API_URL}/weeks/file/${photos[currentIndex]}`}
           alt={`Photo ${currentIndex + 1}`}
           className="max-w-full max-h-full object-contain"
           onError={(e) => {
-            e.target.src = '/placeholder-image.jpg';
-            e.target.alt = 'Image not available';
+            console.error('Failed to load image:', photos[currentIndex]);
+            e.target.style.display = 'none';
+            // Show error message instead
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'text-white text-center p-8';
+            errorDiv.innerHTML = `
+              <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <p>Image not available</p>
+            `;
+            e.target.parentNode.appendChild(errorDiv);
           }}
+          crossOrigin="anonymous"
         />
         
         {photos.length > 1 && (
@@ -75,13 +88,18 @@ const PhotoModal = ({ isOpen, onClose, photos, currentIndex, onNavigate }) => {
 };
 
 // Enhanced Photo Gallery Component
-const PhotoGallery = ({ photos, weekNumber }) => {
+const PhotoGallery = ({ photos, files, weekNumber }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [imageErrors, setImageErrors] = useState(new Set());
+  const [loadedImages, setLoadedImages] = useState(new Set());
 
   const handleImageError = (photoId) => {
     setImageErrors(prev => new Set([...prev, photoId]));
+  };
+
+  const handleImageLoad = (photoId) => {
+    setLoadedImages(prev => new Set([...prev, photoId]));
   };
 
   const openModal = (index) => {
@@ -89,7 +107,19 @@ const PhotoGallery = ({ photos, weekNumber }) => {
     setModalOpen(true);
   };
 
-  const validPhotos = photos.filter(photoId => !imageErrors.has(photoId));
+  // Handle both old format (photos array) and new format (files array)
+  let photoIds = [];
+  if (files && Array.isArray(files)) {
+    // New format: files array with objects containing gridfsId
+    photoIds = files
+      .filter(file => file.contentType && file.contentType.startsWith('image/'))
+      .map(file => file.gridfsId);
+  } else if (photos && Array.isArray(photos)) {
+    // Old format: photos array with direct IDs
+    photoIds = photos;
+  }
+
+  const validPhotos = photoIds.filter(photoId => !imageErrors.has(photoId));
 
   if (validPhotos.length === 0) {
     return (
@@ -108,18 +138,29 @@ const PhotoGallery = ({ photos, weekNumber }) => {
       <div className="photos-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {validPhotos.map((photoId, index) => (
           <div key={photoId} className="photo-container group relative">
-            <img
-              src={`/api/gridfs-weeks/file/${photoId}`}
-              alt={`Week ${weekNumber} photo ${index + 1}`}
-              className="photo w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105"
-              onClick={() => openModal(index)}
-              onError={() => handleImageError(photoId)}
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
-              <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-              </svg>
+            <div className="relative overflow-hidden rounded-lg">
+              {!loadedImages.has(photoId) && (
+                <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              )}
+              <img
+                src={`${API_URL}/weeks/file/${photoId}`}
+                alt={`Week ${weekNumber} photo ${index + 1}`}
+                className="photo w-full h-48 object-cover shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group-hover:scale-105"
+                onClick={() => openModal(index)}
+                onError={() => handleImageError(photoId)}
+                onLoad={() => handleImageLoad(photoId)}
+                loading="lazy"
+                crossOrigin="anonymous"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg>
+              </div>
             </div>
           </div>
         ))}
@@ -136,12 +177,15 @@ const PhotoGallery = ({ photos, weekNumber }) => {
   );
 };
 
-// Enhanced PDF Viewer Component
-const WeekPdfViewer = ({ pdfId, weekNumber, title = "Weekly Report" }) => {
+// Enhanced File Viewer Component (supports both PDF and PPT)
+const WeekFileViewer = ({ fileId, weekNumber, title = "Weekly Report", fileType = "pdf" }) => {
   const [showViewer, setShowViewer] = useState(false);
-  const [pdfError, setPdfError] = useState(false);
 
-  if (!pdfId) return null;
+  if (!fileId) return null;
+
+  const fileUrl = `${API_URL}/weeks/file/${fileId}`;
+  const isPpt = fileType === 'ppt' || fileType === 'pptx';
+  const isPdf = fileType === 'pdf';
 
   return (
     <div className="p-6 bg-gray-50 border-t">
@@ -149,16 +193,18 @@ const WeekPdfViewer = ({ pdfId, weekNumber, title = "Weekly Report" }) => {
       <div className="flex flex-col sm:flex-row gap-4 mb-4">
         <button
           onClick={() => setShowViewer(!showViewer)}
-          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          className={`inline-flex items-center px-6 py-3 text-white rounded-lg transition-colors duration-200 ${
+            isPpt ? 'bg-orange-600 hover:bg-orange-700' : 'bg-blue-600 hover:bg-blue-700'
+          }`}
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
-          {showViewer ? 'Hide Viewer' : 'View PDF'}
+          {showViewer ? 'Hide Viewer' : `View ${isPpt ? 'Presentation' : 'PDF'}`}
         </button>
         <a
-          href={`/api/gridfs-weeks/file/${pdfId}`}
+          href={fileUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
@@ -169,20 +215,24 @@ const WeekPdfViewer = ({ pdfId, weekNumber, title = "Weekly Report" }) => {
           Open in New Tab
         </a>
         <a
-          href={`/api/gridfs-weeks/file/${pdfId}`}
+          href={fileUrl}
           download
           className="inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          Download PDF
+          Download {isPpt ? 'PPT' : 'PDF'}
         </a>
       </div>
       
       {showViewer && (
         <div className="mt-4">
-          <PdfViewer src={`/api/gridfs-weeks/file/${pdfId}`} />
+          {isPpt ? (
+            <PptViewer src={fileUrl} title={title} />
+          ) : (
+            <PdfViewer src={fileUrl} />
+          )}
         </div>
       )}
     </div>
@@ -201,19 +251,14 @@ export default function WeekView() {
       setLoading(true);
       setError(null);
       
-      // Add timeout to prevent hanging requests
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      // Use the API utility instead of direct fetch
+      const result = await api.getWeeks();
+      const all = result.data || result || [];
       
-      const response = await axios.get("/api/gridfs-weeks", {
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      
-      const all = response.data || [];
       const careerEntry = all.find(w => Number(w.weekNumber) === 0);
-      const normalWeeks = all.filter(w => Number(w.weekNumber) !== 0).sort((a,b) => a.weekNumber - b.weekNumber);
+      const normalWeeks = all
+        .filter(w => Number(w.weekNumber) !== 0)
+        .sort((a,b) => a.weekNumber - b.weekNumber);
       
       setCareer(careerEntry || null);
       setWeeks(normalWeeks);
@@ -222,16 +267,16 @@ export default function WeekView() {
       console.error("Error fetching weeks:", err);
       
       let errorMessage = "Failed to load weeks";
-      if (err.name === 'AbortError') {
-        errorMessage = "Request timed out. Please check your connection.";
-      } else if (err.response?.status === 404) {
+      if (err.message.includes('Network error')) {
+        errorMessage = "Network error. Please check your connection.";
+      } else if (err.message.includes('404')) {
         errorMessage = "Weeks data not found. Please contact administrator.";
-      } else if (err.response?.status >= 500) {
+      } else if (err.message.includes('500')) {
         errorMessage = "Server error. Please try again later.";
-      } else if (err.response?.data?.error) {
-        errorMessage = err.response.data.error;
       } else if (!navigator.onLine) {
         errorMessage = "No internet connection. Please check your network.";
+      } else {
+        errorMessage = err.message || "Failed to load weeks";
       }
       
       setError(errorMessage);
@@ -299,14 +344,21 @@ export default function WeekView() {
     );
   }
 
-  if (weeks.length === 0) {
-    return (
-      <div className="max-w-4xl mx-auto p-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-600 mb-4">No Weeks Available</h2>
-        <p className="text-gray-500">No weeks have been uploaded yet.</p>
-      </div>
-    );
-  }
+  // Build display list for weeks 1-8 with placeholders for missing
+  const displayWeeks = Array.from({ length: 8 }, (_, i) => i + 1)
+    .map((n) => {
+      const found = weeks.find((w) => Number(w.weekNumber) === n);
+      if (found) return found;
+      return {
+        _id: `placeholder-${n}`,
+        weekNumber: n,
+        summary: 'No summary available',
+        photos: [],
+        reportFile: null,
+        createdAt: new Date().toISOString(),
+        __placeholder: true
+      };
+    });
 
   return (
     <ErrorBoundary>
@@ -317,29 +369,44 @@ export default function WeekView() {
         </div>
 
         {/* Career Resources */}
-        {career?.reportPdf && (
-          <div className="career-card bg-white rounded-lg shadow-lg overflow-hidden border border-blue-100">
-            <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-6">
-              <h2 className="text-2xl font-bold">Career Resources</h2>
-              <p className="text-purple-100 mt-2">{career.summary || 'Downloadable PDF with guidance resources.'}</p>
+        {career?.reportFile && (
+          <div className="career-card bg-white rounded-lg shadow-lg overflow-hidden border border-orange-100">
+            <div className="bg-gradient-to-r from-orange-600 to-red-700 text-white p-6">
+              <h2 className="text-2xl font-bold">Career Guidance Resources</h2>
+              <p className="text-orange-100 mt-2">{career.summary || 'Interactive presentation with career guidance resources.'}</p>
             </div>
-            <WeekPdfViewer 
-              pdfId={career.reportPdf} 
+            <WeekFileViewer 
+              fileId={career.reportFile} 
               weekNumber={0} 
-              title="Career Guidance Resources"
+              title="Career Guidance Presentation"
+              fileType="pptx"
             />
           </div>
         )}
 
         {/* Weeks Display */}
-        {weeks.map(week => (
+        {displayWeeks.map(week => (
           <div key={week._id} className="week-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
             {/* Week Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="text-2xl font-bold">Week {week.weekNumber}</h2>
-                  <p className="text-blue-100 mt-2">{week.summary}</p>
+                  <h2 className="text-2xl font-bold">
+                    {week.title || `Week ${week.weekNumber}`}
+                  </h2>
+                  <p className="text-blue-100 mt-2">
+                    {week.description || week.summary || `Activities for week ${week.weekNumber}`}
+                  </p>
+                  {week.activities && week.activities !== week.summary && (
+                    <p className="text-blue-100 mt-1 text-sm">
+                      <strong>Activities:</strong> {week.activities}
+                    </p>
+                  )}
+                  {week.highlights && (
+                    <p className="text-blue-100 mt-1 text-sm">
+                      <strong>Highlights:</strong> {week.highlights}
+                    </p>
+                  )}
                 </div>
                 <div className="text-right text-blue-100 text-sm">
                   <p>Created</p>
@@ -355,8 +422,8 @@ export default function WeekView() {
             </div>
 
             {/* Photos Gallery */}
-            {week.photos && week.photos.length > 0 ? (
-              <PhotoGallery photos={week.photos} weekNumber={week.weekNumber} />
+            {((week.photos && week.photos.length > 0) || (week.files && week.files.length > 0)) ? (
+              <PhotoGallery photos={week.photos} files={week.files} weekNumber={week.weekNumber} />
             ) : (
               <div className="p-6 text-center text-gray-500">
                 <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -367,11 +434,37 @@ export default function WeekView() {
             )}
 
             {/* PDF Report */}
-            <WeekPdfViewer 
-              pdfId={week.reportPdf} 
-              weekNumber={week.weekNumber} 
-              title="Weekly Report"
-            />
+            {(week.reportFile || week.reportPdf || (week.pdfFiles && week.pdfFiles.length > 0)) ? (
+              <div>
+                {/* Handle old reportFile or reportPdf field */}
+                {(week.reportFile || week.reportPdf) && (
+                  <WeekFileViewer 
+                    fileId={week.reportFile || week.reportPdf} 
+                    weekNumber={week.weekNumber} 
+                    title="Weekly Report"
+                    fileType="pdf"
+                  />
+                )}
+                
+                {/* Handle new pdfFiles array */}
+                {week.pdfFiles && week.pdfFiles.map((pdfFile, index) => (
+                  <WeekFileViewer 
+                    key={pdfFile.gridfsId || index}
+                    fileId={pdfFile.gridfsId} 
+                    weekNumber={week.weekNumber} 
+                    title={pdfFile.filename || `PDF Document ${index + 1}`}
+                    fileType="pdf"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="p-6 text-center text-gray-500 border-t">
+                <svg className="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p>No report uploaded for this week</p>
+              </div>
+            )}
           </div>
         ))}
 

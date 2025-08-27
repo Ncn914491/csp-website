@@ -53,6 +53,9 @@ The CSP (Computer Science Program) website is a comprehensive MERN stack applica
 3. WHEN a student sends a message in a group chat THEN the system SHALL store the message in MongoDB and display it to all group members
 4. WHEN a student views a group chat THEN the system SHALL display all messages in chronological order with sender information
 5. IF a student is not a member of a group THEN the system SHALL NOT allow them to view or send messages in that group
+6. WHEN a student makes a request to `/api/groups` THEN the system SHALL return a 200 status with available groups instead of 401 Unauthorized
+7. WHEN a student is authenticated THEN the system SHALL properly validate their JWT token and allow access to group endpoints
+8. WHEN the groups API is called THEN it SHALL not return "Token is not valid" errors for properly authenticated users
 
 ### Requirement 5
 

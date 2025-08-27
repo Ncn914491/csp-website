@@ -29,16 +29,17 @@ function Groups() {
       setError(null);
       
       const data = await api.listGroups();
-      setGroups(data || []);
+      const groups = data.data || data || [];
       
       // Update user memberships
       const memberships = new Set();
-      data?.forEach(group => {
+      groups.forEach(group => {
         if (group.isMember) {
           memberships.add(group._id);
         }
       });
       setUserMemberships(memberships);
+      setGroups(groups);
       
       setRetryCount(0);
     } catch (e) {
@@ -54,8 +55,9 @@ function Groups() {
       if (showLoading) setMessagesLoading(true);
       setError(null);
       
-      const msgs = await api.listMessages(groupId);
-      setMessages(msgs || []);
+      const result = await api.listMessages(groupId);
+      const msgs = result.data || result || [];
+      setMessages(msgs);
       
       // Scroll to bottom after messages load
       setTimeout(scrollToBottom, 100);
@@ -97,7 +99,8 @@ function Groups() {
     setSendingMessage(true);
     
     try {
-      const msg = await api.sendMessageToGroup(selectedGroup._id, messageText);
+      const result = await api.sendMessageToGroup(selectedGroup._id, messageText);
+      const msg = result.data || result;
       setMessages(prev => [...prev, msg]);
       setError(null);
       

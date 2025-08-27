@@ -48,26 +48,55 @@ router.get('/', async (req, res) => {
   try {
     let weeks;
     if (req.isMongoConnected) {
-      weeks = await WeeklyUpdate.find().sort({ weekNumber: -1 });
+      // Try to get from the main weeks collection first (which has the enhanced data)
+      const Week = require('../models/weekModel');
+      const mainWeeks = await Week.find().sort({ weekNumber: 1 });
+      
+      if (mainWeeks.length > 0) {
+        weeks = mainWeeks;
+      } else {
+        // Fallback to WeeklyUpdate collection
+        weeks = await WeeklyUpdate.find().sort({ weekNumber: -1 });
+      }
     } else {
       weeks = localData.getWeeklyUpdates().sort((a, b) => b.weekNumber - a.weekNumber);
     }
     
-    // Enhance each week with file system assets
+    // Enhance each week with file system assets and ensure proper structure
     const enhancedWeeks = weeks.map(week => {
       const weekData = week.toObject ? week.toObject() : week;
       const assets = getWeekAssets(weekData.weekNumber);
       
       return {
         ...weekData,
+        // Ensure we have all required fields
+        title: weekData.title || `Week ${weekData.weekNumber}`,
+        description: weekData.description || weekData.summary || `Activities for week ${weekData.weekNumber}`,
+        activities: weekData.activities || weekData.summary || `Activities for week ${weekData.weekNumber}`,
+        highlights: weekData.highlights || `Highlights from week ${weekData.weekNumber}`,
+        files: weekData.files || [],
+        pdfFiles: weekData.pdfFiles || [],
         gallery: weekData.gallery && weekData.gallery.length > 0 ? weekData.gallery : assets.gallery,
-        reportURL: weekData.reportURL || assets.reportURL
+        reportURL: weekData.reportURL || assets.reportURL,
+        // GridFS file access
+        photos: weekData.photos || [],
+        videos: weekData.videos || [],
+        reportPdf: weekData.reportPdf
       };
     });
     
-    res.json(enhancedWeeks);
+    res.json({
+      success: true,
+      count: enhancedWeeks.length,
+      data: enhancedWeeks
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Error fetching weeks:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error', 
+      error: error.message 
+    });
   }
 });
 
@@ -76,13 +105,23 @@ router.get('/:id', async (req, res) => {
   try {
     let week;
     if (req.isMongoConnected) {
-      week = await WeeklyUpdate.findById(req.params.id);
+      // Try main weeks collection first
+      const Week = require('../models/weekModel');
+      week = await Week.findById(req.params.id);
+      
+      if (!week) {
+        // Fallback to WeeklyUpdate collection
+        week = await WeeklyUpdate.findById(req.params.id);
+      }
     } else {
       week = localData.getWeeklyUpdates().find(w => w._id === req.params.id);
     }
     
     if (!week) {
-      return res.status(404).json({ message: 'Weekly update not found' });
+      return res.status(404).json({ 
+        success: false,
+        message: 'Weekly update not found' 
+      });
     }
     
     // Enhance with file system assets
@@ -91,13 +130,30 @@ router.get('/:id', async (req, res) => {
     
     const enhancedWeek = {
       ...weekData,
+      title: weekData.title || `Week ${weekData.weekNumber}`,
+      description: weekData.description || weekData.summary || `Activities for week ${weekData.weekNumber}`,
+      activities: weekData.activities || weekData.summary || `Activities for week ${weekData.weekNumber}`,
+      highlights: weekData.highlights || `Highlights from week ${weekData.weekNumber}`,
+      files: weekData.files || [],
+      pdfFiles: weekData.pdfFiles || [],
       gallery: weekData.gallery && weekData.gallery.length > 0 ? weekData.gallery : assets.gallery,
-      reportURL: weekData.reportURL || assets.reportURL
+      reportURL: weekData.reportURL || assets.reportURL,
+      photos: weekData.photos || [],
+      videos: weekData.videos || [],
+      reportPdf: weekData.reportPdf
     };
     
-    res.json(enhancedWeek);
+    res.json({
+      success: true,
+      data: enhancedWeek
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    console.error('Error fetching week:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error', 
+      error: error.message 
+    });
   }
 });
 
@@ -152,6 +208,73 @@ router.delete('/:id', adminAuth, async (req, res) => {
     res.json({ message: 'Weekly update deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// GET GridFS file by ID (for file access)
+router.get('/file/:id', async (req, res) => {
+  try {
+    if (!req.isMongoConnected || !req.gfs) {
+      return res.status(503).json({ 
+        error: "GridFS not available",
+        message: "File streaming service is currently unavailable"
+      });
+    }
+
+    const mongoose = require('mongoose');
+    
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ 
+        error: "Invalid file ID format",
+        message: "Please provide a valid GridFS file ID"
+      });
+    }
+
+    const fileId = new mongoose.Types.ObjectId(req.params.id);
+    const file = await req.gfs.files.findOne({ _id: fileId });
+    
+    if (!file) {
+      return res.status(404).json({ 
+        error: "File not found",
+        message: `No file found with ID: ${req.params.id}`
+      });
+    }
+
+    // Set headers for file streaming with CORS
+    res.set({
+      'Content-Type': file.contentType || 'application/octet-stream',
+      'Content-Length': file.length,
+      'Content-Disposition': `inline; filename="${file.filename}"`,
+      'Cache-Control': 'public, max-age=31536000',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
+
+    // Stream the file
+    const readstream = req.gfs.createReadStream({ _id: file._id });
+    
+    readstream.on('error', (streamErr) => {
+      console.error('GridFS stream error:', streamErr);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Error streaming file" });
+      }
+    });
+
+    readstream.on('open', () => {
+      console.log(`Streaming file: ${file.filename} (${file.contentType})`);
+    });
+
+    readstream.pipe(res);
+  } catch (error) {
+    console.error('File streaming error:', error);
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        error: "Internal server error while streaming file",
+        message: error.message 
+      });
+    }
   }
 });
 

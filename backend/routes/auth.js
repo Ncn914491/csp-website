@@ -91,26 +91,28 @@ router.post('/login', async (req, res) => {
     let user;
 
     if (req.isMongoConnected) {
-      // MongoDB operations
-      user = await User.findOne({ username: username.trim() });
+      // MongoDB operations - case insensitive search
+      user = await User.findOne({ 
+        username: { $regex: new RegExp(`^${username.trim()}$`, 'i') }
+      });
     } else {
       // Local data operations
       user = localData.findUserByUsername(username.trim());
     }
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
 
     // Compare password with stored hash
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
 
     // Create JWT payload
     const payload = {
-      userId: user._id,
+      userId: user._id.toString(),
       username: user.username,
       role: user.role
     };
@@ -123,7 +125,7 @@ router.post('/login', async (req, res) => {
       message: 'Login successful',
       token,
       user: {
-        id: user._id,
+        id: user._id.toString(),
         username: user.username,
         role: user.role
       }
@@ -141,7 +143,7 @@ router.get('/protected', jwtMiddleware, async (req, res) => {
     res.json({
       message: 'Protected route accessed successfully',
       user: {
-        id: req.user._id,
+        id: req.user._id.toString(),
         username: req.user.username,
         role: req.user.role,
         accessTime: new Date().toISOString()

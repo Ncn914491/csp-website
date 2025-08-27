@@ -49,8 +49,9 @@ function Home() {
 
   const fetchGridfsWeeks = async () => {
     try {
-      const response = await axios.get('/api/gridfs-weeks');
-      return response.data || [];
+      const response = await axios.get('/api/weeks');
+      const result = response.data || {};
+      return result.data || result || [];
     } catch (error) {
       console.error('Error fetching GridFS weeks:', error);
       return [];
@@ -221,7 +222,7 @@ function Home() {
                 {week.photos && week.photos.length > 0 && (
                   <div className="h-32 bg-gray-100 overflow-hidden">
                     <img
-                      src={`/api/gridfs-weeks/file/${week.photos[0]}`}
+                      src={`/api/weeks/file/${week.photos[0]}`}
                       alt={`Week ${week.weekNumber} preview`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
